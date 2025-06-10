@@ -1,0 +1,232 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth scrolling for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent layout shifts and ensure proper spacing for fixed header */
+body {
+  overflow-x: hidden;
+  padding-top: 0; /* Remove any default padding */
+}
+
+/* Add padding to main content to account for fixed header */
+main {
+  padding-top: 64px; /* Height of the fixed header */
+}
+
+/* Ensure cursor effects work properly */
+* {
+  box-sizing: border-box;
+}
+
+/* Optimize performance for animations */
+.cursor-follow-element {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Prevent layout shift during theme transitions */
+.theme-transition {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Accessibility: Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* FIXED: Consistent scrollbar styling to prevent width changes */
+/* Force consistent scrollbar width across all themes */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #475569 #1e293b;
+}
+
+/* Webkit browsers - consistent scrollbar */
+::-webkit-scrollbar {
+  width: 8px !important; /* Force consistent width */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9; /* Light theme track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #64748b; /* Light theme thumb */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Dark theme scrollbar - maintain same width */
+html.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Firefox - consistent scrollbar for both themes */
+html.dark {
+  scrollbar-width: thin;
+  scrollbar-color: #475569 #1e293b;
+}
+
+/* Prevent horizontal scrollbar during transitions */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Ensure body maintains consistent width */
+body {
+  width: 100vw;
+  position: relative;
+}
+
+/* Prevent content shift during theme transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Stabilize layout during theme changes */
+.theme-stable {
+  contain: layout style;
+}
+
+/* Ensure fixed header stays above all content */
+header {
+  z-index: 9999 !important;
+}
+
+/* Smooth transitions for header background */
+header {
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Ensure proper spacing for sections under fixed header */
+section {
+  scroll-margin-top: 80px; /* Offset for smooth scrolling to sections */
+}
+
+/* Enhanced focus styles for better accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .header-bg {
+    background-color: #000000 !important;
+    border-color: #ffffff !important;
+  }
+  
+  .header-text {
+    color: #ffffff !important;
+  }
+  
+  .header-button {
+    background-color: #000000 !important;
+    border: 2px solid #ffffff !important;
+    color: #ffffff !important;
+  }
+  
+  .header-button:hover,
+  .header-button:focus {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+}
+
+/* Ensure text remains visible during font loading */
+@font-face {
+  font-display: swap;
+}
+
+/* Improve text rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Ensure minimum touch target sizes for mobile accessibility */
+@media (max-width: 768px) {
+  button,
+  a,
+  input,
+  textarea,
+  select {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Color contrast utilities for WCAG compliance */
+.text-contrast-high {
+  color: #ffffff;
+  background-color: #000000;
+}
+
+.text-contrast-medium {
+  color: #1f2937;
+  background-color: #f9fafb;
+}
+
+.dark .text-contrast-medium {
+  color: #f9fafb;
+  background-color: #1f2937;
+}
+
+/* Ensure proper contrast ratios */
+.header-light-text {
+  color: #f8fafc; /* Very light gray - contrast ratio 15.8:1 against dark backgrounds */
+}
+
+.header-dark-text {
+  color: #1e293b; /* Very dark gray - contrast ratio 12.6:1 against light backgrounds */
+}
+
+/* Focus indicators with high contrast */
+.focus-ring {
+  box-shadow: 0 0 0 2px #3b82f6, 0 0 0 4px rgba(59, 130, 246, 0.2);
+}
+
+/* Ensure interactive elements have sufficient contrast */
+.interactive-element {
+  position: relative;
+}
+
+.interactive-element::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.interactive-element:hover::before,
+.interactive-element:focus::before {
+  background-color: rgba(255, 255, 255, 0.1);
+}
