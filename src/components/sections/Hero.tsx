@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, Github, Linkedin, Mail, Twitter } from 'lucide-react';
+import { ChevronDown, Github, Linkedin, Mail } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
 import { translations } from '../../data/translations';
 import { Button } from '../ui/Button';
@@ -20,8 +20,7 @@ export const Hero: React.FC = () => {
   const socialLinks = [
     { icon: Github, href: '#', label: 'GitHub' },
     { icon: Linkedin, href: '#', label: 'LinkedIn' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Mail, href: 'mailto:alper@example.com', label: 'Email' }
+    { icon: Mail, href: 'mailto:alpertas.cpp@gmail.com', label: 'Email' }
   ];
 
   return (
@@ -35,7 +34,7 @@ export const Hero: React.FC = () => {
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="mb-8"
+              className="mb-8 mt-6"
             >
               <div className="relative inline-block">
                 <motion.div
@@ -136,7 +135,7 @@ export const Hero: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 1.4 }}
-              className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+              className="absolute bottom-4 left-1/2 transform -translate-x-1/2"
             >
               <motion.button
                 animate={{ y: [0, 10, 0] }}
