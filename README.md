@@ -2,8 +2,6 @@
 
 A modern, responsive personal portfolio website built with React, TypeScript, and Tailwind CSS. Features an interactive network background, smooth animations, and multi-language support.
 
-![Portfolio Preview](https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg)
-
 ## ✨ Features
 
 ### 🎨 Design & UI
