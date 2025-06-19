@@ -14,7 +14,7 @@ export const translations = {
     about: {
       title: 'About Me',
       subtitle: 'Passionate Developer & Technology Enthusiast',
-      bio: "I'm a software engineer passionate about creating innovative digital solutions. I specialize in React Native and modern web technologies, with a focus on building scalable, user-centric applications. I enjoy solving complex problems and continuously learning new technologies to deliver exceptional results.",
+      bio: "I'm a software developer passionate about creating innovative digital solutions. I specialize in React Native and modern web technologies, with a focus on building scalable, user-centric applications. I enjoy solving complex problems and continuously learning new technologies to deliver exceptional results.",
       highlights: [
         'Full-stack development expertise',
         'Mobile-first application development',
@@ -122,7 +122,7 @@ export const translations = {
     about: {
       title: 'Hakkımda',
       subtitle: 'Tutkulu Geliştirici & Teknoloji Meraklısı',
-      bio: 'Yenilikçi dijital çözümler yaratma konusunda tutkulu bir yazılım mühendisiyim. React Native ve modern web teknolojileri konusunda uzmanlaşmış olup, ölçeklenebilir ve kullanıcı odaklı uygulamalar geliştirmeye odaklanıyorum. Karmaşık problemleri çözmeyi seviyorum ve olağanüstü sonuçlar sunmak için sürekli yeni teknolojiler öğreniyorum.',
+      bio: 'Yenilikçi dijital çözümler yaratma konusunda tutkulu bir yazılım geliştiricisiyim. React Native ve modern web teknolojileri konusunda uzmanlaşmış olup, ölçeklenebilir ve kullanıcı odaklı uygulamalar geliştirmeye odaklanıyorum. Karmaşık problemleri çözmeyi seviyorum ve olağanüstü sonuçlar sunmak için sürekli yeni teknolojiler öğreniyorum.',
       highlights: [
         'Full-stack geliştirme uzmanlığı',
         'Mobil öncelikli uygulama geliştirme',
