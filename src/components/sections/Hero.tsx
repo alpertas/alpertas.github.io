@@ -18,14 +18,14 @@ export const Hero: React.FC = () => {
   };
 
   const socialLinks = [
-    { icon: Github, href: '#', label: 'GitHub' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' },
+    { icon: Github, href: 'https://github.com/alpertas', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/alpertasdev/', label: 'LinkedIn' },
     { icon: Mail, href: 'mailto:alpertas.cpp@gmail.com', label: 'Email' }
   ];
 
   return (
     <section id="hero" className="relative">
-      <NetworkBackground nodeCount={60} connectionDistance={100} mouseInfluence={120}>
+      <NetworkBackground nodeCount={140} connectionDistance={400} mouseInfluence={500}>
         <div className="min-h-screen flex items-center justify-center relative">
           <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             {/* Profile Image */}
@@ -47,7 +47,7 @@ export const Hero: React.FC = () => {
                   className="relative"
                 >
                   <img
-                    src="https://images.pexels.com/photos/3777943/pexels-photo-3777943.jpeg"
+                    src="https://media.licdn.com/dms/image/v2/D4D03AQEHy-Tm7j8z9w/profile-displayphoto-crop_800_800/B4DZeFoMmuGgAI-/0/1750293597042?e=1755734400&v=beta&t=6j8b2vA_YT5p9tGtonVmsCFaIaQw-FENFzkFLL0Aof8"
                     alt="Alper Taş"
                     className="relative w-40 h-40 rounded-full object-cover border-4 border-white/20 shadow-2xl backdrop-blur-sm"
                   />
@@ -97,13 +97,14 @@ export const Hero: React.FC = () => {
               transition={{ duration: 0.8, delay: 1.0 }}
               className="mb-12"
             >
-              <Button
-                size="lg"
+              <motion.button
                 onClick={() => scrollToSection('projects')}
-                className="shadow-xl hover:shadow-2xl bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 border-0 text-white font-semibold px-8 py-4 text-lg transition-all duration-300 hover:scale-105"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="relative px-12 py-4 text-lg font-medium text-white bg-white/10 backdrop-blur-md rounded-full border border-white/20 hover:border-blue-400/50 hover:bg-white/15 transition-all duration-300 shadow-lg hover:shadow-blue-500/25 hover:shadow-xl"
               >
                 {t.hero.cta}
-              </Button>
+              </motion.button>
             </motion.div>
 
             {/* Social Links */}
