@@ -41,7 +41,20 @@ export const translations = {
         frontend: "Frontend",
         mobile: "Mobile",
         backend: "Backend",
-        tools: "Tools & Others"
+        tools: "Tools & Others",
+        all: "All Skills"
+      },
+      stats: {
+        totalSkills: "Total Skills",
+        categories: "Categories",
+        expertLevel: "Expert Level",
+        experience: "Years Experience"
+      },
+      levels: {
+        expert: "Expert",
+        advanced: "Advanced",
+        intermediate: "Intermediate",
+        beginner: "Beginner"
       }
     },
     projects: {
@@ -136,7 +149,20 @@ export const translations = {
         frontend: "Frontend",
         mobile: "Mobil",
         backend: "Backend",
-        tools: "Araçlar & Diğer"
+        tools: "Araçlar & Diğer",
+        all: "Tüm Yetenekler"
+      },
+      stats: {
+        totalSkills: "Toplam Yetenek",
+        categories: "Kategoriler",
+        expertLevel: "Uzman Seviye",
+        experience: "Yıl Deneyim"
+      },
+      levels: {
+        expert: "Uzman",
+        advanced: "İleri",
+        intermediate: "Orta",
+        beginner: "Başlangıç"
       }
     },
     projects: {
