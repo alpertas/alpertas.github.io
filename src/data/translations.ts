@@ -13,14 +13,26 @@ export const translations = {
     },
     about: {
       title: "About Me",
-      subtitle: "Passionate Developer & Problem Solver",
-      bio: "I'm a dedicated React Native and Frontend developer with expertise in building scalable mobile and web applications. My passion lies in creating intuitive user experiences using cutting-edge technologies like React.js, Next.js, and TypeScript. I believe in writing clean, maintainable code and staying current with industry best practices.",
+      subtitle: "Passionate Developer & Technology Enthusiast",
+      bio: "I'm a software engineer passionate about creating innovative digital solutions. I specialize in React Native and modern web technologies, with a focus on building scalable, user-centric applications. I enjoy solving complex problems and continuously learning new technologies to deliver exceptional results.",
       highlights: [
-        "5+ years of development experience",
-        "Expert in React Native & React.js",
-        "Strong focus on user experience",
-        "Agile development methodology"
-      ]
+        "Full-stack development expertise",
+        "Mobile-first application development",
+        "Performance optimization specialist",
+        "Clean code and best practices advocate",
+        "Continuous learning mindset"
+      ],
+      skills: {
+        development: "Development",
+        problemSolving: "Problem Solving", 
+        innovation: "Innovation",
+        performance: "Performance"
+      },
+      stats: {
+        experience: "Years of Coding",
+        projects: "GitHub Projects",
+        technologies: "Tech Skills"
+      }
     },
     skills: {
       title: "Skills & Technologies",
@@ -96,14 +108,26 @@ export const translations = {
     },
     about: {
       title: "Hakkımda",
-      subtitle: "Tutkulu Geliştirici & Problem Çözücü",
-      bio: "Ölçeklenebilir mobil ve web uygulamaları geliştirme konusunda uzmanlaşmış, kendini işine adamış bir React Native ve Frontend geliştiricisiyim. Tutkum, React.js, Next.js ve TypeScript gibi son teknolojileri kullanarak sezgisel kullanıcı deneyimleri yaratmakta yatıyor. Temiz, sürdürülebilir kod yazmaya ve sektör en iyi uygulamalarına güncel kalmaya inanıyorum.",
+      subtitle: "Tutkulu Geliştirici & Teknoloji Meraklısı",
+      bio: "Yenilikçi dijital çözümler yaratma konusunda tutkulu bir yazılım mühendisiyim. React Native ve modern web teknolojileri konusunda uzmanlaşmış olup, ölçeklenebilir ve kullanıcı odaklı uygulamalar geliştirmeye odaklanıyorum. Karmaşık problemleri çözmeyi seviyorum ve olağanüstü sonuçlar sunmak için sürekli yeni teknolojiler öğreniyorum.",
       highlights: [
-        "5+ yıl geliştirme deneyimi",
-        "React Native & React.js uzmanı",
-        "Kullanıcı deneyimine güçlü odaklanma",
-        "Çevik geliştirme metodolojisi"
-      ]
+        "Full-stack geliştirme uzmanlığı",
+        "Mobil öncelikli uygulama geliştirme",
+        "Performans optimizasyonu uzmanı",
+        "Temiz kod ve en iyi uygulamalar savunucusu",
+        "Sürekli öğrenme zihniyeti"
+      ],
+      skills: {
+        development: "Geliştirme",
+        problemSolving: "Problem Çözme",
+        innovation: "Yenilikçilik", 
+        performance: "Performans"
+      },
+      stats: {
+        experience: "Yıl Kodlama Deneyimi",
+        projects: "GitHub Projesi",
+        technologies: "Teknik Beceri"
+      }
     },
     skills: {
       title: "Yetenekler & Teknolojiler",
