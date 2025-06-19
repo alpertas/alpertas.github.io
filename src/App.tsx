@@ -96,6 +96,7 @@ function App() {
 
   return (
     <ErrorBoundary>
+      <Header key={`header-${language}`} />
       <AnimatePresence mode="wait">
         <motion.div
           key={`app-${theme}-${language}`}
@@ -110,7 +111,6 @@ function App() {
             overflowX: 'hidden'
           }}
         >
-          <Header key={`header-${language}`} />
           <main key={`main-${language}`}>
             <Hero key={`hero-${language}`} />
             <About key={`about-${language}`} />
