@@ -1,8 +1,5 @@
 # Alper Taş - Personal Portfolio
 
-A modern, responsive personal portfolio website built with React, TypeScript, and Tailwind CSS. Features an interactive network background, smooth animations, and multi-language support.
-
-![Portfolio Preview](https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg)
 
 ## ✨ Features
 
@@ -218,7 +215,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Email**: alper@example.com
 - **LinkedIn**: [linkedin.com/in/alpertas](https://linkedin.com/in/alpertas)
 - **GitHub**: [github.com/alpertas](https://github.com/alpertas)
-- **Website**: [alpertas.dev](https://alpertas.dev)
+- **Website**: [alpertas.dev](https://alpertas.tech)
 
 ## 🙏 Acknowledgments
 
@@ -229,4 +226,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Built with ❤️ using React, TypeScript, and Tailwind CSS**
+**Built with using React, TypeScript, and Tailwind CSS**
