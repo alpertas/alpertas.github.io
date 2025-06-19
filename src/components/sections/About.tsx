@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Code, Brain, Lightbulb, Zap } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import { useLanguage } from '../../hooks/useLanguage';
 import { translations } from '../../data/translations';
@@ -10,95 +10,147 @@ export const About: React.FC = () => {
   const t = translations[language];
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
 
+  const skills = [
+    { icon: Code, label: 'Development', color: 'text-blue-500' },
+    { icon: Brain, label: 'Problem Solving', color: 'text-purple-500' },
+    { icon: Lightbulb, label: 'Innovation', color: 'text-yellow-500' },
+    { icon: Zap, label: 'Performance', color: 'text-green-500' }
+  ];
+
   return (
-    <section id="about" className="py-20 bg-white dark:bg-dark-bg">
+    <section id="about" className="py-20 bg-gradient-to-br from-gray-50 to-white dark:from-dark-bg dark:to-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
         <motion.div
           key={`about-header-${language}`}
           ref={ref}
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <h2 className="text-4xl md:text-5xl font-space-grotesk font-bold text-gray-900 dark:text-white mb-4">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={inView ? { scale: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="inline-block mb-4"
+          >
+            <div className="w-20 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full mx-auto"></div>
+          </motion.div>
+          <h2 className="text-4xl md:text-6xl font-space-grotesk font-bold text-gray-900 dark:text-white mb-6">
             {t.about.title}
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
+          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
             {t.about.subtitle}
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Image */}
+        {/* Main Content */}
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          {/* Profile Section */}
           <motion.div
-            key={`about-image-${language}`}
+            key={`about-profile-${language}`}
             initial={{ opacity: 0, x: -50 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative"
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="lg:col-span-5"
           >
-            <div className="relative">
-              <motion.div
-                animate={{ rotate: [0, 360] }}
-                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl opacity-20 blur-xl"
-              />
-              <img
-                src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg"
-                alt="Alper Taş working"
-                className="relative rounded-2xl shadow-2xl w-full h-auto"
-              />
+            {/* Profile Image */}
+            <div className="relative mb-8">
+              <div className="relative group">
+                {/* Animated background */}
+                <div className="absolute -inset-4 bg-gradient-to-r from-primary-500 via-secondary-500 to-accent-500 rounded-3xl opacity-75 group-hover:opacity-100 transition-opacity duration-300 blur-lg"></div>
+                
+                {/* Image container */}
+                <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-2 shadow-2xl">
+                  <div className="aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/30 dark:to-secondary-900/30 flex items-center justify-center">
+                    {/* Placeholder for professional photo */}
+                    <div className="w-full h-full bg-gradient-to-br from-primary-200 to-secondary-200 dark:from-primary-800 dark:to-secondary-800 rounded-xl flex items-center justify-center">
+                      <div className="text-6xl font-bold text-primary-600 dark:text-primary-400">AT</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            {/* Quick Stats */}
+            <motion.div
+              key={`about-quick-stats-${language}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="grid grid-cols-2 gap-4"
+            >
+              {skills.map((skill, index) => {
+                const IconComponent = skill.icon;
+                return (
+                  <motion.div
+                    key={skill.label}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={inView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ duration: 0.6, delay: 0.7 + index * 0.1 }}
+                    className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                  >
+                    <IconComponent className={`w-8 h-8 ${skill.color} mb-2`} />
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{skill.label}</p>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
           </motion.div>
 
-          {/* Content */}
+          {/* Content Section */}
           <motion.div
             key={`about-content-${language}`}
             initial={{ opacity: 0, x: 50 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="space-y-6"
+            className="lg:col-span-7 space-y-8"
           >
-            <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-              {t.about.bio}
-            </p>
+            {/* Bio */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
+              <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                {t.about.bio}
+              </p>
 
-            <div className="space-y-4">
-              {t.about.highlights.map((highlight, index) => (
-                <motion.div
-                  key={`highlight-${index}-${language}`}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
-                  className="flex items-center space-x-3"
-                >
-                  <CheckCircle className="w-6 h-6 text-primary-500 flex-shrink-0" />
-                  <span className="text-gray-700 dark:text-gray-300">{highlight}</span>
-                </motion.div>
-              ))}
+              {/* Highlights */}
+              <div className="space-y-4">
+                {t.about.highlights.map((highlight, index) => (
+                  <motion.div
+                    key={`highlight-${index}-${language}`}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={inView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
+                    className="flex items-start space-x-4 group"
+                  >
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-900/50 transition-colors duration-300">
+                      <CheckCircle className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                    </div>
+                    <span className="text-gray-700 dark:text-gray-300 leading-relaxed">{highlight}</span>
+                  </motion.div>
+                ))}
+              </div>
             </div>
 
+            {/* Enhanced Stats */}
             <motion.div
               key={`about-stats-${language}`}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 1.0 }}
-              className="pt-6"
+              className="grid grid-cols-1 md:grid-cols-3 gap-6"
             >
-              <div className="grid grid-cols-3 gap-6 text-center">
-                <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-primary-500">5+</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Years Experience</div>
-                </div>
-                <div className="bg-secondary-50 dark:bg-secondary-900/20 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-secondary-500">50+</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Projects Completed</div>
-                </div>
-                <div className="bg-accent-50 dark:bg-accent-900/20 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-accent-500">100%</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Client Satisfaction</div>
-                </div>
+              <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div className="text-3xl md:text-4xl font-bold mb-2">5+</div>
+                <div className="text-primary-100">Years Experience</div>
+              </div>
+              <div className="bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div className="text-3xl md:text-4xl font-bold mb-2">50+</div>
+                <div className="text-secondary-100">Projects Completed</div>
+              </div>
+              <div className="bg-gradient-to-br from-accent-500 to-accent-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div className="text-3xl md:text-4xl font-bold mb-2">100%</div>
+                <div className="text-accent-100">Client Satisfaction</div>
               </div>
             </motion.div>
           </motion.div>
