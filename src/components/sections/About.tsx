@@ -11,10 +11,10 @@ export const About: React.FC = () => {
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
 
   const skills = [
-    { icon: Code, label: 'Development', color: 'text-blue-500' },
-    { icon: Brain, label: 'Problem Solving', color: 'text-purple-500' },
-    { icon: Lightbulb, label: 'Innovation', color: 'text-yellow-500' },
-    { icon: Zap, label: 'Performance', color: 'text-green-500' }
+    { icon: Code, label: t.about.skills.development, color: 'text-blue-500' },
+    { icon: Brain, label: t.about.skills.problemSolving, color: 'text-purple-500' },
+    { icon: Lightbulb, label: t.about.skills.innovation, color: 'text-yellow-500' },
+    { icon: Zap, label: t.about.skills.performance, color: 'text-green-500' }
   ];
 
   return (
@@ -46,53 +46,35 @@ export const About: React.FC = () => {
         </motion.div>
 
         {/* Main Content */}
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Profile Section */}
+        <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
+          {/* Skills Section */}
           <motion.div
-            key={`about-profile-${language}`}
+            key={`about-skills-${language}`}
             initial={{ opacity: 0, x: -50 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="lg:col-span-5"
+            className="lg:col-span-1"
           >
-            {/* Profile Image */}
-            <div className="relative mb-8">
-              <div className="relative group">
-                {/* Animated background */}
-                <div className="absolute -inset-4 bg-gradient-to-r from-primary-500 via-secondary-500 to-accent-500 rounded-3xl opacity-75 group-hover:opacity-100 transition-opacity duration-300 blur-lg"></div>
-                
-                {/* Image container */}
-                <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-2 shadow-2xl">
-                  <div className="aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/30 dark:to-secondary-900/30 flex items-center justify-center">
-                    {/* Placeholder for professional photo */}
-                    <div className="w-full h-full bg-gradient-to-br from-primary-200 to-secondary-200 dark:from-primary-800 dark:to-secondary-800 rounded-xl flex items-center justify-center">
-                      <div className="text-6xl font-bold text-primary-600 dark:text-primary-400">AT</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Stats */}
+            {/* Skills Grid */}
             <motion.div
-              key={`about-quick-stats-${language}`}
+              key={`about-skills-grid-${language}`}
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="grid grid-cols-2 gap-4"
+              className="grid grid-cols-2 lg:grid-cols-1 gap-4"
             >
               {skills.map((skill, index) => {
                 const IconComponent = skill.icon;
                 return (
                   <motion.div
-                    key={skill.label}
+                    key={`${skill.label}-${language}`}
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={inView ? { opacity: 1, scale: 1 } : {}}
                     transition={{ duration: 0.6, delay: 0.7 + index * 0.1 }}
-                    className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                   >
-                    <IconComponent className={`w-8 h-8 ${skill.color} mb-2`} />
-                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{skill.label}</p>
+                    <IconComponent className={`w-10 h-10 ${skill.color} mb-3`} />
+                    <p className="font-medium text-gray-700 dark:text-gray-300">{skill.label}</p>
                   </motion.div>
                 );
               })}
@@ -105,7 +87,7 @@ export const About: React.FC = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="lg:col-span-7 space-y-8"
+            className="lg:col-span-2 space-y-8"
           >
             {/* Bio */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
@@ -141,16 +123,16 @@ export const About: React.FC = () => {
               className="grid grid-cols-1 md:grid-cols-3 gap-6"
             >
               <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <div className="text-3xl md:text-4xl font-bold mb-2">5+</div>
-                <div className="text-primary-100">Years Experience</div>
+                <div className="text-3xl md:text-4xl font-bold mb-2">3+</div>
+                <div className="text-primary-100">{t.about.stats.experience}</div>
               </div>
               <div className="bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <div className="text-3xl md:text-4xl font-bold mb-2">50+</div>
-                <div className="text-secondary-100">Projects Completed</div>
+                <div className="text-3xl md:text-4xl font-bold mb-2">3+</div>
+                <div className="text-secondary-100">{t.about.stats.projects}</div>
               </div>
               <div className="bg-gradient-to-br from-accent-500 to-accent-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <div className="text-3xl md:text-4xl font-bold mb-2">100%</div>
-                <div className="text-accent-100">Client Satisfaction</div>
+                <div className="text-3xl md:text-4xl font-bold mb-2">10+</div>
+                <div className="text-accent-100">{t.about.stats.technologies}</div>
               </div>
             </motion.div>
           </motion.div>
