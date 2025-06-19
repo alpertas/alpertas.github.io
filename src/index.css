@@ -5,17 +5,23 @@
 /* Smooth scrolling for the entire page */
 html {
   scroll-behavior: smooth;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
 }
 
 /* Prevent layout shifts and ensure proper spacing for fixed header */
 body {
   overflow-x: hidden;
-  padding-top: 0; /* Remove any default padding */
+  padding-top: 0 !important; /* Remove any default padding */
+  margin: 0 !important;
+  position: relative !important;
 }
 
 /* Add padding to main content to account for fixed header */
 main {
-  padding-top: 64px; /* Height of the fixed header */
+  padding-top: 64px !important; /* Height of the fixed header */
+  margin-top: 0 !important;
 }
 
 /* Ensure cursor effects work properly */
@@ -109,14 +115,15 @@ body {
   contain: layout style;
 }
 
-/* Ensure fixed header stays above all content */
+/* Ensure header stays fixed on top */
 header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
   z-index: 9999 !important;
-}
-
-/* Smooth transitions for header background */
-header {
-  transition: background-color 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
+  transform: none !important;
+  box-sizing: border-box;
 }
 
 /* Ensure proper spacing for sections under fixed header */
