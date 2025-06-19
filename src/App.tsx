@@ -14,16 +14,13 @@ import { Contact } from './components/sections/Contact';
 import { Footer } from './components/sections/Footer';
 
 // Error Boundary Component
-class ErrorBoundary extends React.Component<
-  { children: React.ReactNode },
-  { hasError: boolean }
-> {
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
   constructor(props: { children: React.ReactNode }) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: Error) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 
@@ -64,21 +61,21 @@ function App() {
   // Apply theme class to html element with scrollbar stability
   useEffect(() => {
     const htmlElement = document.documentElement;
-    
+
     // Add theme class
     htmlElement.className = theme === 'dark' ? 'dark' : '';
-    
+
     // Force scrollbar consistency
     htmlElement.style.scrollbarWidth = 'thin';
-    
+
     // Prevent layout shift during theme transition
     document.body.style.overflow = 'hidden';
-    
+
     // Restore overflow after a brief delay to prevent flash
     const timer = setTimeout(() => {
       document.body.style.overflow = '';
     }, 50);
-    
+
     return () => clearTimeout(timer);
   }, [theme]);
 
@@ -91,7 +88,7 @@ function App() {
   const pageVariants = {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
-    exit: { opacity: 0 }
+    exit: { opacity: 0 },
   };
 
   return (
@@ -108,7 +105,7 @@ function App() {
           className="min-h-screen bg-white dark:bg-dark-bg text-gray-900 dark:text-white theme-stable"
           style={{
             width: '100vw',
-            overflowX: 'hidden'
+            overflowX: 'hidden',
           }}
         >
           <main key={`main-${language}`}>

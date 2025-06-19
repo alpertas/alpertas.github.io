@@ -13,7 +13,17 @@ export const Projects: React.FC = () => {
   const t = translations[language];
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
 
-  const ProjectCard: React.FC<{ project: any; index: number }> = ({ project, index }) => (
+  interface Project {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    demoUrl: string;
+    codeUrl: string;
+    tags: string[];
+  }
+
+  const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, index }) => (
     <motion.div
       key={`project-${project.id}-${language}`}
       initial={{ opacity: 0, y: 50 }}
@@ -50,7 +60,7 @@ export const Projects: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="p-6">
           <h3 className="text-xl font-space-grotesk font-semibold text-gray-900 dark:text-white mb-2">
             {project.title}
@@ -87,9 +97,7 @@ export const Projects: React.FC = () => {
           <h2 className="text-4xl md:text-5xl font-space-grotesk font-bold text-gray-900 dark:text-white mb-4">
             {t.projects.title}
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
-            {t.projects.subtitle}
-          </p>
+          <p className="text-xl text-gray-600 dark:text-gray-300">{t.projects.subtitle}</p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

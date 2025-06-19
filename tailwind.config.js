@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'inter': ['Inter', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
         'space-grotesk': ['Space Grotesk', 'sans-serif'],
       },
       colors: {
@@ -41,17 +41,17 @@ export default {
         // WCAG AA compliant color palette
         contrast: {
           'high-light': '#ffffff', // 21:1 contrast ratio
-          'high-dark': '#000000',  // 21:1 contrast ratio
+          'high-dark': '#000000', // 21:1 contrast ratio
           'medium-light': '#f8fafc', // 15.8:1 contrast ratio
-          'medium-dark': '#1e293b',   // 12.6:1 contrast ratio
-          'text-light': '#374151',    // 7.5:1 contrast ratio
-          'text-dark': '#d1d5db',     // 7.5:1 contrast ratio
-        }
+          'medium-dark': '#1e293b', // 12.6:1 contrast ratio
+          'text-light': '#374151', // 7.5:1 contrast ratio
+          'text-dark': '#d1d5db', // 7.5:1 contrast ratio
+        },
       },
       animation: {
         'fade-in': 'fadeIn 0.6s ease-out',
         'slide-up': 'slideUp 0.6s ease-out',
-        'float': 'float 6s ease-in-out infinite',
+        float: 'float 6s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -69,9 +69,9 @@ export default {
       },
       // Enhanced spacing for better touch targets
       spacing: {
-        '18': '4.5rem',
-        '88': '22rem',
-      }
+        18: '4.5rem',
+        88: '22rem',
+      },
     },
   },
   plugins: [],

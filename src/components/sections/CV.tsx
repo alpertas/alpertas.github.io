@@ -15,13 +15,14 @@ export const CV: React.FC = () => {
     // In a real implementation, this would download the actual CV file
     const fileName = `Alper_Tas_CV_${lang.toUpperCase()}.pdf`;
     console.log(`Downloading ${fileName}`);
-    
+
     // Track download analytics
-    if (typeof window !== 'undefined' && (window as any).gtag) {
+    if (typeof window !== 'undefined' && 'gtag' in window && typeof window.gtag === 'function') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).gtag('event', 'download', {
-        'event_category': 'CV',
-        'event_label': lang,
-        'value': 1
+        event_category: 'CV',
+        event_label: lang,
+        value: 1,
       });
     }
   };
@@ -40,7 +41,7 @@ export const CV: React.FC = () => {
           <h2 className="text-3xl md:text-4xl font-space-grotesk font-bold text-gray-900 dark:text-white mb-4">
             {t.cv.title}
           </h2>
-          
+
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             {/* English CV */}
             <motion.div

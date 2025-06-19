@@ -8,14 +8,14 @@ export const useTheme = () => {
     if (saved && (saved === 'light' || saved === 'dark')) {
       return saved as Theme;
     }
-    
+
     // Detect system preference
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
   useEffect(() => {
     localStorage.setItem('theme', theme);
-    
+
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
@@ -24,7 +24,7 @@ export const useTheme = () => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
   return { theme, setTheme, toggleTheme };

@@ -15,14 +15,14 @@ const languages: LanguageOption[] = [
     code: 'en',
     name: 'English',
     nativeName: 'English',
-    flag: '🇺🇸'
+    flag: '🇺🇸',
   },
   {
     code: 'tr',
     name: 'Turkish',
     nativeName: 'Türkçe',
-    flag: '🇹🇷'
-  }
+    flag: '🇹🇷',
+  },
 ];
 
 interface LanguageSwitcherProps {
@@ -36,7 +36,7 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   variant = 'text',
   showFlag = false,
   showNativeName = false,
-  className = ''
+  className = '',
 }) => {
   const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
@@ -59,7 +59,7 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   const handleLanguageChange = (newLanguage: Language) => {
     setLanguage(newLanguage);
     setIsOpen(false);
-    
+
     // Add a subtle haptic feedback for mobile devices
     if ('vibrate' in navigator) {
       navigator.vibrate(50);
@@ -84,11 +84,11 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
       >
         <Globe className="w-4 h-4" />
         {showFlag && (
-          <span className="text-sm\" aria-hidden="true">{currentLanguage.flag}</span>
+          <span className="text-sm\" aria-hidden="true">
+            {currentLanguage.flag}
+          </span>
         )}
-        <span className="font-medium">
-          {currentLanguage.code.toUpperCase()}
-        </span>
+        <span className="font-medium">{currentLanguage.code.toUpperCase()}</span>
       </motion.button>
     );
   }
@@ -112,7 +112,9 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
       >
         <Globe className="w-4 h-4" />
         {showFlag && (
-          <span className="text-sm\" aria-hidden="true">{currentLanguage.flag}</span>
+          <span className="text-sm\" aria-hidden="true">
+            {currentLanguage.flag}
+          </span>
         )}
         <span className="text-sm font-medium">
           {showNativeName ? currentLanguage.nativeName : currentLanguage.code.toUpperCase()}
@@ -143,16 +145,15 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
         <div className="flex items-center space-x-2">
           <Globe className="w-4 h-4" />
           {showFlag && (
-            <span className="text-sm\" aria-hidden="true">{currentLanguage.flag}</span>
+            <span className="text-sm\" aria-hidden="true">
+              {currentLanguage.flag}
+            </span>
           )}
           <span className="text-sm font-medium">
             {showNativeName ? currentLanguage.nativeName : currentLanguage.name}
           </span>
         </div>
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
+        <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
           <ChevronDown className="w-4 h-4" />
         </motion.div>
       </motion.button>
@@ -170,13 +171,13 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
               border border-gray-600 dark:border-gray-600
               rounded-lg shadow-xl overflow-hidden
             "
-            style={{ 
+            style={{
               zIndex: 99999,
-              position: 'absolute'
+              position: 'absolute',
             }}
             role="listbox"
           >
-            {languages.map((lang) => (
+            {languages.map(lang => (
               <motion.button
                 key={lang.code}
                 whileHover={{ backgroundColor: 'rgba(59, 130, 246, 0.2)' }}
@@ -193,19 +194,19 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
                 aria-selected={language === lang.code}
               >
                 <div className="flex items-center space-x-3">
-                  <span className="text-lg" aria-hidden="true">{lang.flag}</span>
+                  <span className="text-lg" aria-hidden="true">
+                    {lang.flag}
+                  </span>
                   <div>
                     <div className="font-medium">{lang.name}</div>
-                    <div className="text-xs text-gray-300">
-                      {lang.nativeName}
-                    </div>
+                    <div className="text-xs text-gray-300">{lang.nativeName}</div>
                   </div>
                 </div>
                 {language === lang.code && (
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   >
                     <Check className="w-4 h-4 text-blue-400" />
                   </motion.div>

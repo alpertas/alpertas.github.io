@@ -14,11 +14,14 @@ export const About: React.FC = () => {
     { icon: Code, label: t.about.skills.development, color: 'text-blue-500' },
     { icon: Brain, label: t.about.skills.problemSolving, color: 'text-purple-500' },
     { icon: Lightbulb, label: t.about.skills.innovation, color: 'text-yellow-500' },
-    { icon: Zap, label: t.about.skills.performance, color: 'text-green-500' }
+    { icon: Zap, label: t.about.skills.performance, color: 'text-green-500' },
   ];
 
   return (
-    <section id="about" className="py-20 bg-gradient-to-br from-gray-50 to-white dark:from-dark-bg dark:to-gray-900">
+    <section
+      id="about"
+      className="py-20 bg-gradient-to-br from-gray-50 to-white dark:from-dark-bg dark:to-gray-900"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -108,7 +111,9 @@ export const About: React.FC = () => {
                     <div className="flex-shrink-0 w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-900/50 transition-colors duration-300">
                       <CheckCircle className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                     </div>
-                    <span className="text-gray-700 dark:text-gray-300 leading-relaxed">{highlight}</span>
+                    <span className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                      {highlight}
+                    </span>
                   </motion.div>
                 ))}
               </div>

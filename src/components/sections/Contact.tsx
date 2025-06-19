@@ -26,23 +26,23 @@ export const Contact: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    
+
     try {
       // Simulate form submission
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       console.log('Form submitted:', data);
       setSubmitStatus('success');
       reset();
-      
+
       // Reset status after 5 seconds
       setTimeout(() => setSubmitStatus('idle'), 5000);
-    } catch (error) {
+    } catch {
       setSubmitStatus('error');
       setTimeout(() => setSubmitStatus('idle'), 5000);
     } finally {
@@ -55,20 +55,20 @@ export const Contact: React.FC = () => {
       icon: Mail,
       label: 'Email',
       value: t.contact.info.email,
-      href: `mailto:${t.contact.info.email}`
+      href: `mailto:${t.contact.info.email}`,
     },
     {
       icon: Phone,
       label: 'Phone',
       value: t.contact.info.phone,
-      href: `tel:${t.contact.info.phone.replace(/\s/g, '')}`
+      href: `tel:${t.contact.info.phone.replace(/\s/g, '')}`,
     },
     {
       icon: MapPin,
       label: 'Location',
       value: t.contact.info.location,
-      href: '#'
-    }
+      href: '#',
+    },
   ];
 
   return (
@@ -112,9 +112,7 @@ export const Contact: React.FC = () => {
                       <info.icon className="w-6 h-6 text-primary-500" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 dark:text-white">
-                        {info.label}
-                      </h3>
+                      <h3 className="font-semibold text-gray-900 dark:text-white">{info.label}</h3>
                       <a
                         href={info.href}
                         className="text-gray-600 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors duration-300"
@@ -143,8 +141,8 @@ export const Contact: React.FC = () => {
                       {t.contact.form.name}
                     </label>
                     <input
-                      {...register('name', { 
-                        required: t.contact.form.validation.nameRequired
+                      {...register('name', {
+                        required: t.contact.form.validation.nameRequired,
                       })}
                       type="text"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300"
@@ -164,8 +162,8 @@ export const Contact: React.FC = () => {
                         required: t.contact.form.validation.emailRequired,
                         pattern: {
                           value: /^\S+@\S+$/i,
-                          message: t.contact.form.validation.emailInvalid
-                        }
+                          message: t.contact.form.validation.emailInvalid,
+                        },
                       })}
                       type="email"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300"
@@ -183,7 +181,7 @@ export const Contact: React.FC = () => {
                   </label>
                   <input
                     {...register('subject', {
-                      required: t.contact.form.validation.subjectRequired
+                      required: t.contact.form.validation.subjectRequired,
                     })}
                     type="text"
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300"
@@ -199,8 +197,8 @@ export const Contact: React.FC = () => {
                     {t.contact.form.message}
                   </label>
                   <textarea
-                    {...register('message', { 
-                      required: t.contact.form.validation.messageRequired
+                    {...register('message', {
+                      required: t.contact.form.validation.messageRequired,
                     })}
                     rows={6}
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300 resize-none"
@@ -217,9 +215,7 @@ export const Contact: React.FC = () => {
                   className="w-full flex items-center justify-center space-x-2"
                 >
                   <Send className="w-5 h-5" />
-                  <span>
-                    {isSubmitting ? t.contact.form.sending : t.contact.form.send}
-                  </span>
+                  <span>{isSubmitting ? t.contact.form.sending : t.contact.form.send}</span>
                 </Button>
 
                 {/* Status Messages */}

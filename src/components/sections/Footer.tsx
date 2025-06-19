@@ -2,19 +2,17 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Twitter, Mail, Heart } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
-import { useTheme } from '../../hooks/useTheme';
 import { translations } from '../../data/translations';
 
 export const Footer: React.FC = () => {
   const { language } = useLanguage();
-  const { theme } = useTheme();
   const t = translations[language];
 
   const socialLinks = [
     { icon: Github, href: '#', label: 'GitHub' },
     { icon: Linkedin, href: '#', label: 'LinkedIn' },
     { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Mail, href: 'mailto:alper@example.com', label: 'Email' }
+    { icon: Mail, href: 'mailto:alper@example.com', label: 'Email' },
   ];
 
   const scrollToSection = (sectionId: string) => {
@@ -28,7 +26,7 @@ export const Footer: React.FC = () => {
     { label: t.nav.about, id: 'about' },
     { label: t.nav.skills, id: 'skills' },
     { label: t.nav.projects, id: 'projects' },
-    { label: t.nav.contact, id: 'contact' }
+    { label: t.nav.contact, id: 'contact' },
   ];
 
   return (
@@ -54,7 +52,7 @@ export const Footer: React.FC = () => {
           <div className="space-y-4">
             <h3 className="font-semibold text-lg">Navigation</h3>
             <nav className="space-y-2">
-              {navItems.map((item) => (
+              {navItems.map(item => (
                 <motion.button
                   key={`footer-nav-${item.id}-${language}`}
                   whileHover={{ x: 5 }}
@@ -71,7 +69,7 @@ export const Footer: React.FC = () => {
           <div className="space-y-4">
             <h3 className="font-semibold text-lg">Connect</h3>
             <div className="flex space-x-4">
-              {socialLinks.map((link) => (
+              {socialLinks.map(link => (
                 <motion.a
                   key={`footer-social-${link.label}-${language}`}
                   href={link.href}
@@ -94,9 +92,7 @@ export const Footer: React.FC = () => {
           viewport={{ once: true }}
           className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0"
         >
-          <p className="text-gray-400 text-center md:text-left">
-            {t.footer.copyright}
-          </p>
+          <p className="text-gray-400 text-center md:text-left">{t.footer.copyright}</p>
           <p className="text-gray-400 text-center md:text-right flex items-center space-x-1">
             <span>{t.footer.built}</span>
             <Heart className="w-4 h-4 text-red-500" />

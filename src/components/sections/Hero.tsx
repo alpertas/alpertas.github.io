@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { ChevronDown, Github, Linkedin, Mail } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
 import { translations } from '../../data/translations';
-import { Button } from '../ui/Button';
 import { NetworkBackground } from '../effects/NetworkBackground';
 
 export const Hero: React.FC = () => {
@@ -20,7 +19,7 @@ export const Hero: React.FC = () => {
   const socialLinks = [
     { icon: Github, href: 'https://github.com/alpertas', label: 'GitHub' },
     { icon: Linkedin, href: 'https://www.linkedin.com/in/alpertasdev/', label: 'LinkedIn' },
-    { icon: Mail, href: 'mailto:alpertas.cpp@gmail.com', label: 'Email' }
+    { icon: Mail, href: 'mailto:alpertas.cpp@gmail.com', label: 'Email' },
   ];
 
   return (
@@ -39,13 +38,10 @@ export const Hero: React.FC = () => {
               <div className="relative inline-block">
                 <motion.div
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
                   className="absolute inset-0 w-40 h-40 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full blur-sm opacity-30"
                 />
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="relative"
-                >
+                <motion.div whileHover={{ scale: 1.05 }} className="relative">
                   <img
                     src="https://media.licdn.com/dms/image/v2/D4D03AQEHy-Tm7j8z9w/profile-displayphoto-crop_800_800/B4DZeFoMmuGgAI-/0/1750293597042?e=1755734400&v=beta&t=6j8b2vA_YT5p9tGtonVmsCFaIaQw-FENFzkFLL0Aof8"
                     alt="Alper Taş"
@@ -115,7 +111,7 @@ export const Hero: React.FC = () => {
               transition={{ duration: 0.8, delay: 1.2 }}
               className="flex justify-center space-x-6 mb-16"
             >
-              {socialLinks.map((link, index) => (
+              {socialLinks.map(link => (
                 <motion.a
                   key={link.label}
                   href={link.href}

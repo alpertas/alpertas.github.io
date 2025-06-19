@@ -1,9 +1,9 @@
 # Alper Taş - Personal Portfolio
 
-
 ## ✨ Features
 
 ### 🎨 Design & UI
+
 - **Modern Design**: Clean, professional interface with dark/light theme support
 - **Interactive Network Background**: Dynamic particle system with React Native atom-inspired orbital effects
 - **Smooth Animations**: Framer Motion powered transitions and micro-interactions
@@ -11,18 +11,21 @@
 - **Accessibility**: WCAG AA compliant with proper contrast ratios and keyboard navigation
 
 ### 🌐 Multi-language Support
+
 - **Bilingual Interface**: English and Turkish language support
 - **Dynamic Language Switching**: Instant UI updates without page reload
 - **Localized Content**: All text content available in both languages
 - **Browser Language Detection**: Automatically detects user's preferred language
 
 ### 🎯 Interactive Elements
+
 - **Sticky Navigation**: Fixed header with smooth scroll-to-section functionality
 - **Theme Toggle**: Seamless dark/light mode switching with system preference detection
 - **Contact Form**: Functional contact form with validation and error handling
 - **CV Download**: Downloadable CV in both English and Turkish
 
 ### 📱 Sections
+
 - **Hero Section**: Eye-catching introduction with animated network background
 - **About**: Personal introduction with highlights and statistics
 - **Skills**: Interactive skill showcase with progress bars and categories
@@ -32,21 +35,25 @@
 ## 🛠️ Technologies Used
 
 ### Frontend Framework
+
 - **React 18** - Modern React with hooks and functional components
 - **TypeScript** - Type-safe development with enhanced IDE support
 - **Vite** - Fast build tool and development server
 
 ### Styling & Animation
+
 - **Tailwind CSS** - Utility-first CSS framework for rapid styling
 - **Framer Motion** - Production-ready motion library for React
 - **Custom CSS** - Additional styling for complex animations and effects
 
 ### UI Components & Icons
+
 - **Lucide React** - Beautiful, customizable SVG icons
 - **React Hook Form** - Performant forms with easy validation
 - **React Intersection Observer** - Efficient scroll-based animations
 
 ### Development Tools
+
 - **ESLint** - Code linting and quality assurance
 - **PostCSS** - CSS processing with Autoprefixer
 - **TypeScript ESLint** - TypeScript-specific linting rules
@@ -54,18 +61,21 @@
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js (version 16 or higher)
 - npm or yarn package manager
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/alper-tas-portfolio.git
    cd alper-tas-portfolio
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    # or
@@ -73,6 +83,7 @@
    ```
 
 3. **Start the development server**
+
    ```bash
    npm run dev
    # or
@@ -129,22 +140,27 @@ src/
 ## 🎨 Customization
 
 ### Adding New Languages
+
 1. Add language option to `src/hooks/useLanguage.ts`
 2. Add translations to `src/data/translations.ts`
 3. Update language switcher in `src/components/ui/LanguageSwitcher.tsx`
 
 ### Modifying Content
+
 - **Skills**: Edit `skillsData` in `src/data/content.ts`
 - **Projects**: Edit `projectsData` in `src/data/content.ts`
 - **Translations**: Edit language objects in `src/data/translations.ts`
 
 ### Styling Changes
+
 - **Colors**: Modify color palette in `tailwind.config.js`
 - **Fonts**: Update font imports in `index.html` and `tailwind.config.js`
 - **Animations**: Customize animations in component files or add new ones
 
 ### Network Background
+
 The interactive network background can be customized by modifying props in `src/components/sections/Hero.tsx`:
+
 - `nodeCount`: Number of particles
 - `connectionDistance`: Distance for particle connections
 - `mouseInfluence`: Mouse interaction radius
@@ -152,16 +168,19 @@ The interactive network background can be customized by modifying props in `src/
 ## 🌐 Deployment
 
 ### Netlify (Recommended)
+
 1. Build the project: `npm run build`
 2. Deploy the `dist` folder to Netlify
 3. Configure redirects for SPA routing
 
 ### Vercel
+
 1. Connect your GitHub repository to Vercel
 2. Vercel will automatically detect Vite and configure build settings
 3. Deploy with automatic CI/CD
 
 ### GitHub Pages
+
 1. Install gh-pages: `npm install --save-dev gh-pages`
 2. Add deploy script to package.json
 3. Run: `npm run deploy`
