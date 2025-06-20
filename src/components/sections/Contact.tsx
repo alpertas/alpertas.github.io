@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
-import { useForm } from 'react-hook-form';
+import { Mail, MapPin, Send } from 'lucide-react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import ReCAPTCHA from 'react-google-recaptcha';
+import emailjs from '@emailjs/browser';
 import { useInView } from 'react-intersection-observer';
 import { useLanguage } from '../../hooks/useLanguage';
 import { translations } from '../../data/translations';
@@ -15,38 +18,75 @@ interface FormData {
   message: string;
 }
 
+// EmailJS configuration - Add these to your .env file
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'your_service_id';
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'your_template_id';
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'your_public_key';
+const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || 'your_recaptcha_site_key';
+
 export const Contact: React.FC = () => {
   const { language } = useLanguage();
   const t = translations[language];
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<FormData>();
+  // Validation schema with Yup
+  const validationSchema = Yup.object({
+    name: Yup.string()
+      .required(t.contact.form.validation.nameRequired)
+      .min(2, t.contact.form.validation.nameMinLength),
+    email: Yup.string()
+      .email(t.contact.form.validation.emailInvalid)
+      .required(t.contact.form.validation.emailRequired),
+    subject: Yup.string()
+      .required(t.contact.form.validation.subjectRequired)
+      .min(5, t.contact.form.validation.subjectMinLength),
+    message: Yup.string()
+      .required(t.contact.form.validation.messageRequired)
+      .min(10, t.contact.form.validation.messageMinLength),
+  });
 
-  const onSubmit = async (data: FormData) => {
-    setIsSubmitting(true);
-
+  const handleSubmit = async (values: FormData, { setSubmitting, resetForm }: any) => {
     try {
-      // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Verify reCAPTCHA
+      const recaptchaValue = recaptchaRef.current?.getValue();
+      if (!recaptchaValue) {
+        alert(t.contact.form.validation.recaptchaRequired);
+        setSubmitting(false);
+        return;
+      }
 
-      console.log('Form submitted:', data);
+      // Prepare email parameters
+      const templateParams = {
+        to_email: import.meta.env.VITE_TO_EMAIL || 'alpertas.cpp@gmail.com',
+        from_name: values.name,
+        from_email: values.email,
+        subject: values.subject,
+        message: values.message,
+        'g-recaptcha-response': recaptchaValue,
+      };
+
+      // Send email using EmailJS
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      );
+
       setSubmitStatus('success');
-      reset();
+      resetForm();
+      recaptchaRef.current?.reset();
 
       // Reset status after 5 seconds
       setTimeout(() => setSubmitStatus('idle'), 5000);
-    } catch {
+    } catch (error) {
+      console.error('Email sending failed:', error);
       setSubmitStatus('error');
       setTimeout(() => setSubmitStatus('idle'), 5000);
     } finally {
-      setIsSubmitting(false);
+      setSubmitting(false);
     }
   };
 
@@ -58,14 +98,8 @@ export const Contact: React.FC = () => {
       href: `mailto:${t.contact.info.email}`,
     },
     {
-      icon: Phone,
-      label: 'Phone',
-      value: t.contact.info.phone,
-      href: `tel:${t.contact.info.phone.replace(/\s/g, '')}`,
-    },
-    {
       icon: MapPin,
-      label: 'Location',
+      label: t.contact.info.locationLabel,
       value: t.contact.info.location,
       href: '#',
     },
@@ -134,117 +168,121 @@ export const Contact: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <Card className="p-8">
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      {t.contact.form.name}
-                    </label>
-                    <input
-                      {...register('name', {
-                        required: t.contact.form.validation.nameRequired,
-                      })}
-                      type="text"
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300"
-                      placeholder={t.contact.form.name}
-                    />
-                    {errors.name && (
-                      <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
+              <Formik
+                initialValues={{
+                  name: '',
+                  email: '',
+                  subject: '',
+                  message: '',
+                }}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+              >
+                {({ isSubmitting }) => (
+                  <Form className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          {t.contact.form.name}
+                        </label>
+                        <Field
+                          name="name"
+                          type="text"
+                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300"
+                          placeholder={t.contact.form.name}
+                        />
+                        <ErrorMessage name="name" component="p" className="mt-1 text-sm text-red-500" />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          {t.contact.form.email}
+                        </label>
+                        <Field
+                          name="email"
+                          type="email"
+                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300"
+                          placeholder={t.contact.form.email}
+                        />
+                        <ErrorMessage name="email" component="p" className="mt-1 text-sm text-red-500" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {t.contact.form.subject}
+                      </label>
+                      <Field
+                        name="subject"
+                        type="text"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300"
+                        placeholder={t.contact.form.subject}
+                      />
+                      <ErrorMessage name="subject" component="p" className="mt-1 text-sm text-red-500" />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {t.contact.form.message}
+                      </label>
+                      <Field
+                        name="message"
+                        as="textarea"
+                        rows={6}
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300 resize-none"
+                        placeholder={t.contact.form.message}
+                      />
+                      <ErrorMessage name="message" component="p" className="mt-1 text-sm text-red-500" />
+                    </div>
+
+                    {/* reCAPTCHA */}
+                    <div className="flex justify-center">
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey={RECAPTCHA_SITE_KEY}
+                        theme="light"
+                        hl={language}
+                      />
+                    </div>
+
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full flex items-center justify-center space-x-2"
+                    >
+                      <Send className="w-5 h-5" />
+                      <span>{isSubmitting ? t.contact.form.sending : t.contact.form.send}</span>
+                    </Button>
+
+                    {/* Status Messages */}
+                    {submitStatus === 'success' && (
+                      <motion.div
+                        key={`contact-success-${language}`}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg"
+                      >
+                        <p className="text-green-600 dark:text-green-400 text-center">
+                          {t.contact.form.success}
+                        </p>
+                      </motion.div>
                     )}
-                  </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      {t.contact.form.email}
-                    </label>
-                    <input
-                      {...register('email', {
-                        required: t.contact.form.validation.emailRequired,
-                        pattern: {
-                          value: /^\S+@\S+$/i,
-                          message: t.contact.form.validation.emailInvalid,
-                        },
-                      })}
-                      type="email"
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300"
-                      placeholder={t.contact.form.email}
-                    />
-                    {errors.email && (
-                      <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+                    {submitStatus === 'error' && (
+                      <motion.div
+                        key={`contact-error-${language}`}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
+                      >
+                        <p className="text-red-600 dark:text-red-400 text-center">
+                          {t.contact.form.error}
+                        </p>
+                      </motion.div>
                     )}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    {t.contact.form.subject}
-                  </label>
-                  <input
-                    {...register('subject', {
-                      required: t.contact.form.validation.subjectRequired,
-                    })}
-                    type="text"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300"
-                    placeholder={t.contact.form.subject}
-                  />
-                  {errors.subject && (
-                    <p className="mt-1 text-sm text-red-500">{errors.subject.message}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    {t.contact.form.message}
-                  </label>
-                  <textarea
-                    {...register('message', {
-                      required: t.contact.form.validation.messageRequired,
-                    })}
-                    rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300 resize-none"
-                    placeholder={t.contact.form.message}
-                  />
-                  {errors.message && (
-                    <p className="mt-1 text-sm text-red-500">{errors.message.message}</p>
-                  )}
-                </div>
-
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full flex items-center justify-center space-x-2"
-                >
-                  <Send className="w-5 h-5" />
-                  <span>{isSubmitting ? t.contact.form.sending : t.contact.form.send}</span>
-                </Button>
-
-                {/* Status Messages */}
-                {submitStatus === 'success' && (
-                  <motion.div
-                    key={`contact-success-${language}`}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg"
-                  >
-                    <p className="text-green-600 dark:text-green-400 text-center">
-                      {t.contact.form.success}
-                    </p>
-                  </motion.div>
+                  </Form>
                 )}
-
-                {submitStatus === 'error' && (
-                  <motion.div
-                    key={`contact-error-${language}`}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
-                  >
-                    <p className="text-red-600 dark:text-red-400 text-center">
-                      {t.contact.form.error}
-                    </p>
-                  </motion.div>
-                )}
-              </form>
+              </Formik>
             </Card>
           </motion.div>
         </div>
