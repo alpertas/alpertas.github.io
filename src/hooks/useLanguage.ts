@@ -74,14 +74,17 @@ export const useLanguage = () => {
   });
 
   // Force re-render when language changes globally
-  const [, forceUpdate] = useState({});
-  const triggerUpdate = useCallback(() => {
-    forceUpdate({});
+  const [updateKey, setUpdateKey] = useState(0);
+  const forceUpdate = useCallback(() => {
+    setUpdateKey(prev => prev + 1);
   }, []);
 
   useEffect(() => {
-    return languageEmitter.subscribe(triggerUpdate);
-  }, [triggerUpdate]);
+    const unsubscribe = languageEmitter.subscribe(() => {
+      forceUpdate();
+    });
+    return unsubscribe;
+  }, [forceUpdate]);
 
   useEffect(() => {
     // Store language preference
@@ -100,20 +103,27 @@ export const useLanguage = () => {
         })
       );
     }
+
+    // Emit change event to notify other components
+    languageEmitter.emit();
   }, [language]);
 
   const setLanguageWithUpdate = useCallback(
     (newLanguage: Language) => {
-      if (newLanguage === language) return; // Prevent unnecessary updates
+      if (newLanguage === language) {
+        return; // Prevent unnecessary updates
+      }
 
+      // Update language state immediately
       setLanguage(newLanguage);
 
-      // Emit language change event to all components
-      setTimeout(() => {
+      // Force immediate re-render for all subscribed components
+      requestAnimationFrame(() => {
         languageEmitter.emit();
-      }, 0);
+        forceUpdate();
+      });
     },
-    [language]
+    [language, forceUpdate]
   );
 
   const toggleLanguage = useCallback(() => {
@@ -125,12 +135,8 @@ export const useLanguage = () => {
     language,
     setLanguage: setLanguageWithUpdate,
     toggleLanguage,
+    updateKey, // Include update key for components that need it
   };
-};
-
-// Export the current language for components that need it without the hook
-export const getCurrentLanguage = (): Language => {
-  return getStoredLanguage() || detectBrowserLanguage();
 };
 
 // Utility function to get translation with fallback
@@ -140,7 +146,7 @@ export const getTranslation = (
   key: string,
   fallbackLanguage: Language = 'en'
 ): string => {
-  const currentLang = getCurrentLanguage();
+  const currentLang = getStoredLanguage() || detectBrowserLanguage();
 
   try {
     // Try to get translation for current language

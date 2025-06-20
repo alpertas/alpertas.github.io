@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
@@ -11,7 +11,24 @@ export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { language } = useLanguage();
+
+  // Force component re-render when language changes
   const t = translations[language];
+
+  // Memoize navigation items to ensure they update with language changes
+  const navItems = useMemo(() => {
+    return [
+      { label: t.nav.about, id: 'about' },
+      { label: t.nav.skills, id: 'skills' },
+      { label: t.nav.projects, id: 'projects' },
+      { label: t.nav.contact, id: 'contact' },
+    ];
+  }, [t.nav]);
+
+  // Track language changes
+  useEffect(() => {
+    // Language changed, component will re-render automatically
+  }, [language]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,13 +50,6 @@ export const Header: React.FC = () => {
       setIsMenuOpen(false);
     }
   };
-
-  const navItems = [
-    { label: t.nav.about, id: 'about' },
-    { label: t.nav.skills, id: 'skills' },
-    { label: t.nav.projects, id: 'projects' },
-    { label: t.nav.contact, id: 'contact' },
-  ];
 
   return (
     <motion.header

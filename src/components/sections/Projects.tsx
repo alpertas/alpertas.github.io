@@ -99,7 +99,7 @@ export const Projects: React.FC = () => {
             {t.projects.title}
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-12">{t.projects.subtitle}</p>
-          
+
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={inView ? { opacity: 1, scale: 1 } : {}}
@@ -112,28 +112,28 @@ export const Projects: React.FC = () => {
                   <Sparkles className="w-6 h-6" />
                 </div>
               </div>
-              
+
               <div className="flex items-center justify-center mb-6">
                 <Clock className="w-12 h-12 text-primary-500 mr-4" />
                 <h3 className="text-3xl font-space-grotesk font-bold text-gray-900 dark:text-white">
                   {t.projects.comingSoon}
                 </h3>
               </div>
-              
+
               <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
                 {t.projects.comingSoonDescription}
               </p>
-                         </div>
-           </motion.div>
+            </div>
+          </motion.div>
 
-           {/* Grid for projects - uncomment when needed */}
-           {/* <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+          {/* Grid for projects - uncomment when needed */}
+          {/* <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
              {projectsData.map((project, index) => (
                <ProjectCard key={`${project.id}-${language}`} project={project} index={index} />
              ))}
            </div> */}
-         </motion.div>
-       </div>
-     </section>
-   );
- };
+        </motion.div>
+      </div>
+    </section>
+  );
+};

@@ -14,13 +14,13 @@ export const CV: React.FC = () => {
   const handleDownload = (lang: 'en' | 'tr') => {
     const fileName = `Alper_Tas_CV_${lang.toUpperCase()}.pdf`;
     const filePath = `/${fileName}`;
-    
+
     // Create a temporary link element for download
     const link = document.createElement('a');
     link.href = filePath;
     link.download = fileName;
     link.style.display = 'none';
-    
+
     // Append to body, click, and remove
     document.body.appendChild(link);
     link.click();
@@ -68,9 +68,7 @@ export const CV: React.FC = () => {
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                   {t.cv.english}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm">
-                  {t.cv.format}
-                </p>
+                <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm">{t.cv.format}</p>
                 <Button
                   onClick={() => handleDownload('en')}
                   className="w-full flex items-center justify-center space-x-2"
@@ -96,9 +94,7 @@ export const CV: React.FC = () => {
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                   {t.cv.turkish}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm">
-                  {t.cv.format}
-                </p>
+                <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm">{t.cv.format}</p>
                 <Button
                   variant="secondary"
                   onClick={() => handleDownload('tr')}

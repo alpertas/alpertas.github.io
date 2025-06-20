@@ -47,7 +47,13 @@ export const Contact: React.FC = () => {
       .min(10, t.contact.form.validation.messageMinLength),
   });
 
-  const handleSubmit = async (values: FormData, { setSubmitting, resetForm }: any) => {
+  const handleSubmit = async (
+    values: FormData,
+    {
+      setSubmitting,
+      resetForm,
+    }: { setSubmitting: (isSubmitting: boolean) => void; resetForm: () => void }
+  ) => {
     try {
       // Verify reCAPTCHA
       const recaptchaValue = recaptchaRef.current?.getValue();
@@ -181,7 +187,7 @@ export const Contact: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="filter blur-sm pointer-events-none">
                   <Formik
                     initialValues={{
@@ -195,111 +201,127 @@ export const Contact: React.FC = () => {
                   >
                     {({ isSubmitting }) => (
                       <Form className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          {t.contact.form.name}
-                        </label>
-                        <Field
-                          name="name"
-                          type="text"
-                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300"
-                          placeholder={t.contact.form.name}
-                        />
-                        <ErrorMessage name="name" component="p" className="mt-1 text-sm text-red-500" />
-                      </div>
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                              {t.contact.form.name}
+                            </label>
+                            <Field
+                              name="name"
+                              type="text"
+                              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300"
+                              placeholder={t.contact.form.name}
+                            />
+                            <ErrorMessage
+                              name="name"
+                              component="p"
+                              className="mt-1 text-sm text-red-500"
+                            />
+                          </div>
 
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          {t.contact.form.email}
-                        </label>
-                        <Field
-                          name="email"
-                          type="email"
-                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300"
-                          placeholder={t.contact.form.email}
-                        />
-                        <ErrorMessage name="email" component="p" className="mt-1 text-sm text-red-500" />
-                      </div>
-                    </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                              {t.contact.form.email}
+                            </label>
+                            <Field
+                              name="email"
+                              type="email"
+                              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300"
+                              placeholder={t.contact.form.email}
+                            />
+                            <ErrorMessage
+                              name="email"
+                              component="p"
+                              className="mt-1 text-sm text-red-500"
+                            />
+                          </div>
+                        </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        {t.contact.form.subject}
-                      </label>
-                      <Field
-                        name="subject"
-                        type="text"
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300"
-                        placeholder={t.contact.form.subject}
-                      />
-                      <ErrorMessage name="subject" component="p" className="mt-1 text-sm text-red-500" />
-                    </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {t.contact.form.subject}
+                          </label>
+                          <Field
+                            name="subject"
+                            type="text"
+                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300"
+                            placeholder={t.contact.form.subject}
+                          />
+                          <ErrorMessage
+                            name="subject"
+                            component="p"
+                            className="mt-1 text-sm text-red-500"
+                          />
+                        </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        {t.contact.form.message}
-                      </label>
-                      <Field
-                        name="message"
-                        as="textarea"
-                        rows={6}
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300 resize-none"
-                        placeholder={t.contact.form.message}
-                      />
-                      <ErrorMessage name="message" component="p" className="mt-1 text-sm text-red-500" />
-                    </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {t.contact.form.message}
+                          </label>
+                          <Field
+                            name="message"
+                            as="textarea"
+                            rows={6}
+                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-bg dark:text-white transition-colors duration-300 resize-none"
+                            placeholder={t.contact.form.message}
+                          />
+                          <ErrorMessage
+                            name="message"
+                            component="p"
+                            className="mt-1 text-sm text-red-500"
+                          />
+                        </div>
 
-                    {/* reCAPTCHA */}
-                    <div className="flex justify-center">
-                      <ReCAPTCHA
-                        ref={recaptchaRef}
-                        sitekey={RECAPTCHA_SITE_KEY}
-                        theme="light"
-                        hl={language}
-                      />
-                    </div>
+                        {/* reCAPTCHA */}
+                        <div className="flex justify-center">
+                          <ReCAPTCHA
+                            ref={recaptchaRef}
+                            sitekey={RECAPTCHA_SITE_KEY}
+                            theme="light"
+                            hl={language}
+                          />
+                        </div>
 
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full flex items-center justify-center space-x-2"
-                    >
-                      <Send className="w-5 h-5" />
-                      <span>{isSubmitting ? t.contact.form.sending : t.contact.form.send}</span>
-                    </Button>
+                        <Button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="w-full flex items-center justify-center space-x-2"
+                        >
+                          <Send className="w-5 h-5" />
+                          <span>{isSubmitting ? t.contact.form.sending : t.contact.form.send}</span>
+                        </Button>
 
-                    {/* Status Messages */}
-                    {submitStatus === 'success' && (
-                      <motion.div
-                        key={`contact-success-${language}`}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg"
-                      >
-                        <p className="text-green-600 dark:text-green-400 text-center">
-                          {t.contact.form.success}
-                        </p>
-                      </motion.div>
+                        {/* Status Messages */}
+                        {submitStatus === 'success' && (
+                          <motion.div
+                            key={`contact-success-${language}`}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg"
+                          >
+                            <p className="text-green-600 dark:text-green-400 text-center">
+                              {t.contact.form.success}
+                            </p>
+                          </motion.div>
+                        )}
+
+                        {submitStatus === 'error' && (
+                          <motion.div
+                            key={`contact-error-${language}`}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
+                          >
+                            <p className="text-red-600 dark:text-red-400 text-center">
+                              {t.contact.form.error}
+                            </p>
+                          </motion.div>
+                        )}
+                      </Form>
                     )}
-
-                    {submitStatus === 'error' && (
-                      <motion.div
-                        key={`contact-error-${language}`}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
-                      >
-                        <p className="text-red-600 dark:text-red-400 text-center">
-                          {t.contact.form.error}
-                        </p>
-                      </motion.div>
-                      )}
-                    </Form>
-                  )}
-                </Formik>
+                  </Formik>
+                </div>
               </div>
-            </div>
             </Card>
           </motion.div>
         </div>

@@ -9,6 +9,7 @@ Bu rehber Contact formunun EmailJS ve reCAPTCHA ile nasıl yapılandırılacağ�
 3. Email Template oluşturun
 
 ### Template Parametreleri
+
 Template'inizde şu parametreleri kullanın:
 
 ```
@@ -24,11 +25,12 @@ Bu mesaj {{from_name}} ({{from_email}}) tarafından gönderilmiştir.
 ```
 
 ### Environment Variables
+
 `.env.local` dosyası oluşturun ve şu değişkenleri ekleyin:
 
 ```env
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_emailjs_service_id
-NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_emailjs_template_id  
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_emailjs_template_id
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_emailjs_public_key
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
 ```
@@ -55,7 +57,8 @@ NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
 ## Test
 
 Form test etmek için:
+
 1. Tüm alanları doldurun
 2. reCAPTCHA'yı tamamlayın
 3. Submit butonuna tıklayın
-4. Email'in alpertas.cpp@gmail.com adresine gönderildiğini kontrol edin 
+4. Email'in alpertas.cpp@gmail.com adresine gönderildiğini kontrol edin

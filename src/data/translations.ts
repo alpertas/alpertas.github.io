@@ -1,3 +1,39 @@
+import type { Language } from '../hooks/useLanguage';
+
+// Import helper functions from useLanguage for consistency
+const detectBrowserLanguage = (): Language => {
+  if (typeof window === 'undefined') return 'en';
+
+  const browserLang = navigator.language.toLowerCase();
+  const supportedLanguages = ['tr', 'en'];
+
+  if (supportedLanguages.includes(browserLang)) {
+    return browserLang as Language;
+  }
+
+  const langPrefix = browserLang.split('-')[0];
+  if (supportedLanguages.includes(langPrefix)) {
+    return langPrefix as Language;
+  }
+
+  return 'en';
+};
+
+const getStoredLanguage = (): Language | null => {
+  if (typeof window === 'undefined') return null;
+
+  try {
+    const stored = localStorage.getItem('portfolio-language');
+    if (stored && (stored === 'en' || stored === 'tr')) {
+      return stored as Language;
+    }
+  } catch (error) {
+    console.warn('Failed to read language from localStorage:', error);
+  }
+
+  return null;
+};
+
 export const translations = {
   en: {
     hero: {
@@ -63,7 +99,8 @@ export const translations = {
       viewDemo: 'View Demo',
       viewCode: 'View Code',
       comingSoon: 'Coming Soon',
-      comingSoonDescription: 'I\'m currently working on some exciting projects. Stay tuned for updates!',
+      comingSoonDescription:
+        "I'm currently working on some exciting projects. Stay tuned for updates!",
     },
     cv: {
       title: 'Download CV',
@@ -179,7 +216,8 @@ export const translations = {
       viewDemo: 'Demo İncele',
       viewCode: 'Kodu İncele',
       comingSoon: 'Yakında',
-      comingSoonDescription: 'Şu anda bazı heyecan verici projeler üzerinde çalışıyorum. Güncellemeler için takipte kalın!',
+      comingSoonDescription:
+        'Şu anda bazı heyecan verici projeler üzerinde çalışıyorum. Güncellemeler için takipte kalın!',
     },
     cv: {
       title: 'CV İndir',
@@ -237,9 +275,44 @@ export const translations = {
 // Type for translation keys (for better TypeScript support)
 export type TranslationKey = keyof typeof translations.en;
 
-// Utility function to get nested translation values
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getNestedTranslation = (obj: any, path: string, fallback: string = ''): string => {
+// Export the current language for components that need it without the hook
+export const getCurrentLanguage = (): Language => {
+  // Always try localStorage first for consistency
+  const stored = getStoredLanguage();
+  if (stored) return stored;
+
+  // Fallback to browser detection
+  return detectBrowserLanguage();
+};
+
+// Utility function to get translation with fallback
+export const getNestedTranslation = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return path.split('.').reduce((current: any, key) => current?.[key], obj) || fallback;
+  translations: Record<Language, any>,
+  key: string,
+  fallbackLanguage: Language = 'en'
+): string => {
+  // Use stored language preference for consistency
+  const currentLang = getCurrentLanguage();
+
+  try {
+    // Try to get translation for current language
+    const translation = key.split('.').reduce((obj, k) => obj?.[k], translations[currentLang]);
+    if (translation && typeof translation === 'string') return translation;
+
+    // Fallback to fallback language
+    const fallbackTranslation = key
+      .split('.')
+      .reduce((obj, k) => obj?.[k], translations[fallbackLanguage]);
+    if (fallbackTranslation && typeof fallbackTranslation === 'string') return fallbackTranslation;
+
+    // Return key if no translation found
+    console.warn(
+      `No translation found for key "${key}" in languages: ${currentLang}, ${fallbackLanguage}`
+    );
+    return key;
+  } catch (error) {
+    console.warn(`Translation error for key "${key}":`, error);
+    return key;
+  }
 };

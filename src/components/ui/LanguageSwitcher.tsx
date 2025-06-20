@@ -38,7 +38,7 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   showNativeName = false,
   className = '',
 }) => {
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, toggleLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -57,10 +57,11 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   }, []);
 
   const handleLanguageChange = (newLanguage: Language) => {
+    // Use the setLanguage function from useLanguage hook which handles event emission
     setLanguage(newLanguage);
     setIsOpen(false);
 
-    // Add a subtle haptic feedback for mobile devices
+    // Add visual feedback
     if ('vibrate' in navigator) {
       navigator.vibrate(50);
     }
@@ -70,10 +71,11 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   if (variant === 'text') {
     return (
       <motion.button
+        key={`lang-switcher-${language}`} // Force re-render on language change
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         whileFocus={{ scale: 1.05 }}
-        onClick={() => handleLanguageChange(language === 'en' ? 'tr' : 'en')}
+        onClick={toggleLanguage}
         className={`
           flex items-center space-x-1 px-3 py-2 rounded-lg transition-all duration-300
           font-medium text-sm
@@ -96,10 +98,11 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   if (variant === 'toggle') {
     return (
       <motion.button
+        key={`lang-switcher-toggle-${language}`} // Force re-render on language change
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         whileFocus={{ scale: 1.05 }}
-        onClick={() => handleLanguageChange(language === 'en' ? 'tr' : 'en')}
+        onClick={toggleLanguage}
         className={`
           flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-300
           bg-white/10 hover:bg-white/20 focus:bg-white/20 backdrop-blur-sm border border-white/20
