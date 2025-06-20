@@ -234,7 +234,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Email**: alper@example.com
 - **LinkedIn**: [linkedin.com/in/alpertas](https://linkedin.com/in/alpertas)
 - **GitHub**: [github.com/alpertas](https://github.com/alpertas)
-- **Website**: [alpertas.dev](https://alpertas.tech)
+- **Website**: [alpertas.tech](https://alpertas.tech)
 
 ## 🙏 Acknowledgments
 
