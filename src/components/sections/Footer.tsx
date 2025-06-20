@@ -9,9 +9,9 @@ export const Footer: React.FC = () => {
   const t = translations[language];
 
   const socialLinks = [
-    { icon: Github, href: '#', label: 'GitHub' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' },
-    { icon: Mail, href: 'mailto:alper@example.com', label: 'Email' },
+    { icon: Github, href: 'https://github.com/alpertas', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/alpertasdev/', label: 'LinkedIn' },
+    { icon: Mail, href: 'mailto:alpertas.cpp@gmail.com', label: 'Email' },
   ];
 
   const scrollToSection = (sectionId: string) => {
