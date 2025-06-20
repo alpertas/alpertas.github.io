@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Twitter, Mail, Heart } from 'lucide-react';
+import { Github, Linkedin, Mail } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
 import { translations } from '../../data/translations';
 
@@ -11,7 +11,6 @@ export const Footer: React.FC = () => {
   const socialLinks = [
     { icon: Github, href: '#', label: 'GitHub' },
     { icon: Linkedin, href: '#', label: 'LinkedIn' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
     { icon: Mail, href: 'mailto:alper@example.com', label: 'Email' },
   ];
 
@@ -95,7 +94,6 @@ export const Footer: React.FC = () => {
           <p className="text-gray-400 text-center md:text-left">{t.footer.copyright}</p>
           <p className="text-gray-400 text-center md:text-right flex items-center space-x-1">
             <span>{t.footer.built}</span>
-            <Heart className="w-4 h-4 text-red-500" />
           </p>
         </motion.div>
       </div>
