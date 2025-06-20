@@ -7,14 +7,17 @@ Projeniz GitHub Pages'e deploy edilmek için tamamen hazır! İşte yapılan kon
 ### ✅ Yapılan Değişiklikler:
 
 1. **Package.json Scripts**:
+
    - `deploy:gh` - GitHub Pages'e manual deploy
    - `predeploy` - Deploy öncesi otomatik build
 
 2. **Vite Configuration**:
+
    - Base path `/personal-portfolio/` ayarlandı
    - Production optimizasyonları aktif
 
 3. **GitHub Actions Workflow**:
+
    - Otomatik deployment (`.github/workflows/deploy.yml`)
    - Her main branch push'ta otomatik deploy
    - Linting ve formatting kontrolleri
@@ -27,10 +30,12 @@ Projeniz GitHub Pages'e deploy edilmek için tamamen hazır! İşte yapılan kon
 ### Seçenek 1: Otomatik Deploy (GitHub Actions) - Önerilen ✨
 
 1. **GitHub Repository Settings**:
+
    - Repository > Settings > Pages
    - Source: "GitHub Actions" seçin
 
 2. **Deploy**:
+
    ```bash
    # Değişiklikleri commit ve push et
    git add .
@@ -78,4 +83,4 @@ git commit -m "Ready for GitHub Pages deployment"
 git push origin main
 ```
 
-**Deploy işlemi 2-3 dakika sürer ve siteniz yayında olur!** 
+**Deploy işlemi 2-3 dakika sürer ve siteniz yayında olur!**
