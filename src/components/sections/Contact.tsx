@@ -166,20 +166,35 @@ export const Contact: React.FC = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
+            className="relative"
           >
             <Card className="p-8">
-              <Formik
-                initialValues={{
-                  name: '',
-                  email: '',
-                  subject: '',
-                  message: '',
-                }}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
-              >
-                {({ isSubmitting }) => (
-                  <Form className="space-y-6">
+              <div className="relative">
+                {/* Blur overlay */}
+                <div className="absolute inset-0 bg-white/50 dark:bg-dark-surface/50 backdrop-blur-sm rounded-lg z-10 flex items-center justify-center">
+                  <div className="text-center">
+                    <p className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                      {t.contact.form.comingSoon}
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-300">
+                      {t.contact.form.comingSoonDescription}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="filter blur-sm pointer-events-none">
+                  <Formik
+                    initialValues={{
+                      name: '',
+                      email: '',
+                      subject: '',
+                      message: '',
+                    }}
+                    validationSchema={validationSchema}
+                    onSubmit={handleSubmit}
+                  >
+                    {({ isSubmitting }) => (
+                      <Form className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -279,10 +294,12 @@ export const Contact: React.FC = () => {
                           {t.contact.form.error}
                         </p>
                       </motion.div>
-                    )}
-                  </Form>
-                )}
-              </Formik>
+                      )}
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+            </div>
             </Card>
           </motion.div>
         </div>

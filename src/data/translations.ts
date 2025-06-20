@@ -83,6 +83,8 @@ export const translations = {
         sending: 'Sending...',
         success: 'Message sent successfully!',
         error: 'Failed to send message. Please try again.',
+        comingSoon: 'Coming Soon',
+        comingSoonDescription: 'Contact form will be available soon',
         validation: {
           nameRequired: 'Name is required',
           emailRequired: 'Email is required',
@@ -198,6 +200,8 @@ export const translations = {
         sending: 'Gönderiliyor...',
         success: 'Mesaj başarıyla gönderildi!',
         error: 'Mesaj gönderilemedi. Lütfen tekrar deneyin.',
+        comingSoon: 'Yakında',
+        comingSoonDescription: 'İletişim formu yakında kullanıma sunulacak',
         validation: {
           nameRequired: 'Ad Soyad gereklidir',
           emailRequired: 'E-posta gereklidir',
