@@ -12,9 +12,19 @@ export const CV: React.FC = () => {
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
 
   const handleDownload = (lang: 'en' | 'tr') => {
-    // In a real implementation, this would download the actual CV file
     const fileName = `Alper_Tas_CV_${lang.toUpperCase()}.pdf`;
-    console.log(`Downloading ${fileName}`);
+    const filePath = `/${fileName}`;
+    
+    // Create a temporary link element for download
+    const link = document.createElement('a');
+    link.href = filePath;
+    link.download = fileName;
+    link.style.display = 'none';
+    
+    // Append to body, click, and remove
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 
     // Track download analytics
     if (typeof window !== 'undefined' && 'gtag' in window && typeof window.gtag === 'function') {
@@ -42,14 +52,14 @@ export const CV: React.FC = () => {
             {t.cv.title}
           </h2>
 
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-stretch max-w-2xl mx-auto">
             {/* English CV */}
             <motion.div
               key={`cv-english-${language}`}
               initial={{ opacity: 0, x: -30 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="group"
+              className="group flex-1"
             >
               <div className="bg-white dark:bg-dark-surface rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-dark-border">
                 <div className="flex items-center justify-center w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -59,7 +69,7 @@ export const CV: React.FC = () => {
                   {t.cv.english}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm">
-                  {t.cv.format} • 2.3 MB
+                  {t.cv.format}
                 </p>
                 <Button
                   onClick={() => handleDownload('en')}
@@ -77,7 +87,7 @@ export const CV: React.FC = () => {
               initial={{ opacity: 0, x: 30 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="group"
+              className="group flex-1"
             >
               <div className="bg-white dark:bg-dark-surface rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-dark-border">
                 <div className="flex items-center justify-center w-16 h-16 bg-secondary-100 dark:bg-secondary-900/30 rounded-full mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -87,7 +97,7 @@ export const CV: React.FC = () => {
                   {t.cv.turkish}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm">
-                  {t.cv.format} • 2.1 MB
+                  {t.cv.format}
                 </p>
                 <Button
                   variant="secondary"
