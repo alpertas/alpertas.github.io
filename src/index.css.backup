@@ -16,10 +16,6 @@ body {
   padding-top: 0 !important; /* Remove any default padding */
   margin: 0 !important;
   position: relative !important;
-  /* Enable momentum scrolling on iOS */
-  -webkit-overflow-scrolling: touch;
-  /* Ensure touch events work properly */
-  touch-action: manipulation;
 }
 
 /* Add padding to main content to account for fixed header */
@@ -196,20 +192,6 @@ body {
   select {
     min-height: 44px;
     min-width: 44px;
-  }
-
-  /* Mobile scrolling improvements */
-  html,
-  body {
-    -webkit-overflow-scrolling: touch;
-    overflow-y: auto !important;
-    touch-action: pan-y pinch-zoom;
-  }
-
-  /* Ensure main content is scrollable on mobile */
-  main {
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y pinch-zoom;
   }
 }
 

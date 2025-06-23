@@ -68,15 +68,13 @@ function App() {
     // Force scrollbar consistency
     htmlElement.style.scrollbarWidth = 'thin';
 
-    // Prevent layout shift during theme transition
-    document.body.style.overflow = 'hidden';
+    // Don't prevent scrolling during theme transitions on mobile
+    // This was causing mobile scrolling issues
 
-    // Restore overflow after a brief delay to prevent flash
-    const timer = setTimeout(() => {
+    return () => {
+      // Ensure scrolling is never disabled
       document.body.style.overflow = '';
-    }, 50);
-
-    return () => clearTimeout(timer);
+    };
   }, [theme]);
 
   // Apply language to html element
