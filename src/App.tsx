@@ -62,6 +62,7 @@ function App() {
   console.log('version 1.0.0');
   useEffect(() => {
     const htmlElement = document.documentElement;
+    const bodyElement = document.body;
 
     // Add theme class
     htmlElement.className = theme === 'dark' ? 'dark' : '';
@@ -69,12 +70,22 @@ function App() {
     // Force scrollbar consistency
     htmlElement.style.scrollbarWidth = 'thin';
 
-    // Don't prevent scrolling during theme transitions on mobile
-    // This was causing mobile scrolling issues
+    // Ensure mobile scrolling works properly
+    bodyElement.style.overflowY = 'auto';
+    bodyElement.style.setProperty('-webkit-overflow-scrolling', 'touch');
+    bodyElement.style.touchAction = 'pan-y';
+
+    // Mobile-specific fixes
+    if (window.innerWidth <= 768) {
+      htmlElement.style.height = '100%';
+      htmlElement.style.overflow = 'hidden auto';
+      bodyElement.style.height = 'auto';
+      bodyElement.style.minHeight = '100vh';
+    }
 
     return () => {
       // Ensure scrolling is never disabled
-      document.body.style.overflow = '';
+      bodyElement.style.overflow = '';
     };
   }, [theme]);
 
@@ -103,8 +114,12 @@ function App() {
           transition={{ duration: 0.3 }}
           className="min-h-screen bg-white dark:bg-dark-bg text-gray-900 dark:text-white theme-stable"
           style={{
-            width: '100vw',
+            width: '100%',
+            maxWidth: '100vw',
+            height: 'auto',
+            minHeight: '100vh',
             overflowX: 'hidden',
+            overflowY: 'auto',
           }}
         >
           <main key={`main-${language}`}>
