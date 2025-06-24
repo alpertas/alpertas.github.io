@@ -1,15 +1,9 @@
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, Github, Linkedin, Mail } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
 import { translations } from '../../data/translations';
-
-// Lazy load NetworkBackground for better performance
-const NetworkBackground = lazy(() =>
-  import('../effects/NetworkBackground').then(module => ({
-    default: module.NetworkBackground,
-  }))
-);
+import { NetworkBackground } from '../effects/NetworkBackground';
 
 export const Hero: React.FC = () => {
   const { language } = useLanguage();
@@ -47,9 +41,8 @@ export const Hero: React.FC = () => {
     ? { nodeCount: 0, connectionDistance: 0, mouseInfluence: 0 } // Mobil: Tamamen kapalı
     : { nodeCount: 140, connectionDistance: 400, mouseInfluence: 500 }; // Desktop: Normal ayarlar
 
-  return (
-    <section id="hero" className="relative">
-      <Suspense fallback={<div className="min-h-screen bg-slate-900" />}>
+      return (
+      <section id="hero" className="relative">
         <NetworkBackground {...networkProps}>
           <div className="min-h-screen flex items-center justify-center relative">
             <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -201,7 +194,6 @@ export const Hero: React.FC = () => {
             </div>
           </div>
         </NetworkBackground>
-      </Suspense>
-    </section>
-  );
+      </section>
+    );
 };
