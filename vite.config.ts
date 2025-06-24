@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   base: '/',
   optimizeDeps: {
-    exclude: ['lucide-react'],
+    include: ['lucide-react', 'framer-motion'],
   },
   build: {
     // Optimize for production
@@ -16,23 +16,11 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: id => {
-          // React ve React-DOM'u vendor chunk'ına al
-          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
-            return 'vendor';
-          }
-          // Framer Motion'ı ayrı chunk'a al
-          if (id.includes('node_modules/framer-motion')) {
-            return 'framer-motion';
-          }
-          // Lucide React'ı ayrı chunk'a al
-          if (id.includes('node_modules/lucide-react')) {
-            return 'lucide';
-          }
-          // Diğer node_modules'ları vendor chunk'ına al
-          if (id.includes('node_modules')) {
-            return 'vendor-libs';
-          }
+        manualChunks: {
+          // React ecosystem'ini birlikte tut
+          vendor: ['react', 'react-dom'],
+          // UI libraries'i birlikte tut
+          ui: ['framer-motion', 'lucide-react'],
         },
         chunkFileNames: chunkInfo => {
           const facadeModuleId = chunkInfo.facadeModuleId

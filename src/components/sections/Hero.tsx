@@ -68,7 +68,6 @@ export const Hero: React.FC = () => {
                     width="160"
                     height="160"
                     loading="eager"
-                    fetchPriority="high"
                     decoding="async"
                   />
                   <div className="absolute inset-0 rounded-full bg-gradient-to-t from-blue-500/20 to-transparent" />
