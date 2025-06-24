@@ -59,6 +59,7 @@ function App() {
   const { language } = useLanguage();
 
   // Apply theme class to html element with scrollbar stability
+  console.log("version 1.0.0");
   useEffect(() => {
     const htmlElement = document.documentElement;
 
