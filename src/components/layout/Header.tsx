@@ -191,7 +191,9 @@ export const Header: React.FC = () => {
           style={{
             background: isScrolled
               ? 'linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 50%, rgb(51, 65, 85) 100%)'
-              : 'rgba(255, 255, 255, 0.95)',
+              : theme === 'dark'
+                ? 'rgba(15, 23, 42, 0.95)'
+                : 'rgba(255, 255, 255, 0.95)',
           }}
         >
           <div className="px-4 py-2 space-y-2">
@@ -208,7 +210,9 @@ export const Header: React.FC = () => {
                   ${
                     isScrolled
                       ? 'text-gray-100 hover:text-white focus:text-white hover:bg-white/10 focus:bg-white/10'
-                      : 'text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-gray-800'
+                      : theme === 'dark'
+                        ? 'text-gray-200 hover:text-white focus:text-white hover:bg-white/10 focus:bg-white/10'
+                        : 'text-gray-700 hover:text-primary-500 focus:text-primary-500 hover:bg-gray-100 focus:bg-gray-100'
                   }
                 `}
               >
