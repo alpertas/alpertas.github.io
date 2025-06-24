@@ -9,6 +9,20 @@ export const Hero: React.FC = () => {
   const { language } = useLanguage();
   const t = translations[language];
 
+  // Mobil cihaz kontrolü için hook
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -22,9 +36,14 @@ export const Hero: React.FC = () => {
     { icon: Mail, href: 'mailto:alpertas.cpp@gmail.com', label: 'Email' },
   ];
 
+  // Mobil ve desktop için farklı NetworkBackground ayarları
+  const networkProps = isMobile
+    ? { nodeCount: 0, connectionDistance: 0, mouseInfluence: 0 } // Mobil: Tamamen kapalı
+    : { nodeCount: 140, connectionDistance: 400, mouseInfluence: 500 }; // Desktop: Normal ayarlar
+
   return (
     <section id="hero" className="relative">
-      <NetworkBackground nodeCount={140} connectionDistance={400} mouseInfluence={500}>
+      <NetworkBackground {...networkProps}>
         <div className="min-h-screen flex items-center justify-center relative">
           <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             {/* Profile Image */}

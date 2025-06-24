@@ -433,12 +433,20 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
 
     const { width, height } = dimensions;
 
+    // Mobilde nodeCount 0 ise animasyonu durdur (performans optimizasyonu)
+    if (nodeCount === 0) {
+      // Sadece siyah background çiz
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, width, height);
+      return;
+    }
+
     updateNodes(width, height);
     calculateConnections();
     render(ctx, width, height);
 
     animationRef.current = requestAnimationFrame(animate);
-  }, [dimensions, updateNodes, calculateConnections, render]);
+  }, [dimensions, updateNodes, calculateConnections, render, nodeCount]);
 
   // Handle mouse movement
   useEffect(() => {
@@ -454,7 +462,7 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      e.preventDefault();
+      // Mobilde kaydırmayı engellememek için preventDefault kaldırıldı
       const canvas = canvasRef.current;
       if (!canvas || !e.touches[0]) return;
 
@@ -465,14 +473,17 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
       };
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    // Sadece nodeCount > 0 olduğunda event listener'ları ekle (performans optimizasyonu)
+    if (nodeCount > 0) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    }
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('touchmove', handleTouchMove);
     };
-  }, []);
+  }, [nodeCount]);
 
   // Handle resize and initialization
   useEffect(() => {
