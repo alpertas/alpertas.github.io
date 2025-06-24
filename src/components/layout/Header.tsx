@@ -78,7 +78,7 @@ export const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div className="flex items-center justify-between h-full">
           {/* Logo */}
-          <motion.div
+          <motion.button
             whileHover={{ scale: 1.05 }}
             className={`font-space-grotesk font-bold text-xl cursor-pointer z-10 relative flex-shrink-0 transition-colors duration-300 ${
               isScrolled
@@ -86,9 +86,12 @@ export const Header: React.FC = () => {
                 : 'text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400'
             }`}
             onClick={() => scrollToSection('hero')}
+            aria-label={t.accessibility.goToHome}
+            title={t.accessibility.goToHome}
+            type="button"
           >
             AT
-          </motion.div>
+          </motion.button>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8 z-10 relative flex-1 justify-center">
@@ -107,6 +110,9 @@ export const Header: React.FC = () => {
                       : 'text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400'
                   }
                 `}
+                aria-label={t.accessibility.goToSection.replace('{{section}}', item.label)}
+                title={t.accessibility.goToSection.replace('{{section}}', item.label)}
+                type="button"
               >
                 {item.label}
               </motion.button>
@@ -147,8 +153,8 @@ export const Header: React.FC = () => {
                     : 'text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-gray-800'
                 }
               `}
-              title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
-              aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+              title={t.accessibility.toggleTheme}
+              aria-label={t.accessibility.toggleTheme}
             >
               {theme === 'light' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </motion.button>
@@ -168,7 +174,7 @@ export const Header: React.FC = () => {
                     : 'text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:bg-gray-100 dark:focus:bg-gray-800'
                 }
               `}
-              aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-label={isMenuOpen ? t.accessibility.closeMenu : t.accessibility.openMenu}
               aria-expanded={isMenuOpen}
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -215,6 +221,9 @@ export const Header: React.FC = () => {
                         : 'text-gray-700 hover:text-primary-500 focus:text-primary-500 hover:bg-gray-100 focus:bg-gray-100'
                   }
                 `}
+                aria-label={t.accessibility.goToSection.replace('{{section}}', item.label)}
+                title={t.accessibility.goToSection.replace('{{section}}', item.label)}
+                type="button"
               >
                 {item.label}
               </motion.button>

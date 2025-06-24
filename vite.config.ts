@@ -11,12 +11,34 @@ export default defineConfig({
   build: {
     // Optimize for production
     minify: 'terser',
+    target: 'es2020',
+    cssCodeSplit: true,
+    sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          forms: ['formik', 'react-hook-form', 'yup'],
-          ui: ['framer-motion', 'lucide-react'],
+        manualChunks: id => {
+          // React ve React-DOM'u vendor chunk'ına al
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+            return 'vendor';
+          }
+          // Framer Motion'ı ayrı chunk'a al
+          if (id.includes('node_modules/framer-motion')) {
+            return 'framer-motion';
+          }
+          // Lucide React'ı ayrı chunk'a al
+          if (id.includes('node_modules/lucide-react')) {
+            return 'lucide';
+          }
+          // Diğer node_modules'ları vendor chunk'ına al
+          if (id.includes('node_modules')) {
+            return 'vendor-libs';
+          }
+        },
+        chunkFileNames: chunkInfo => {
+          const facadeModuleId = chunkInfo.facadeModuleId
+            ? chunkInfo.facadeModuleId.split('/').pop()?.replace('.tsx', '').replace('.ts', '')
+            : 'chunk';
+          return `js/${facadeModuleId}-[hash].js`;
         },
       },
     },

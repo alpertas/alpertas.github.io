@@ -150,6 +150,15 @@ export const translations = {
       toggleLanguage: 'Toggle language',
       openMenu: 'Open navigation menu',
       closeMenu: 'Close navigation menu',
+      goToSection: 'Go to {{section}} section',
+      goToHome: 'Go to homepage',
+      scrollDown: 'Scroll down',
+      viewProjects: 'View my projects',
+      socialLinks: {
+        github: "GitHub - Alper Taş's GitHub profile",
+        linkedin: "LinkedIn - Alper Taş's LinkedIn profile",
+        email: 'Email - Contact Alper Taş',
+      },
     },
   },
   tr: {
@@ -268,6 +277,15 @@ export const translations = {
       toggleLanguage: 'Dil değiştir',
       openMenu: 'Navigasyon menüsünü aç',
       closeMenu: 'Navigasyon menüsünü kapat',
+      goToSection: '{{section}} bölümüne git',
+      goToHome: 'Ana sayfaya git',
+      scrollDown: 'Aşağı kaydır',
+      viewProjects: 'Projelerimi görüntüle',
+      socialLinks: {
+        github: "GitHub - Alper Taş'ın GitHub profili",
+        linkedin: "LinkedIn - Alper Taş'ın LinkedIn profili",
+        email: 'E-posta - Alper Taş ile iletişim',
+      },
     },
   },
 };
