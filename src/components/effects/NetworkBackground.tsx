@@ -38,9 +38,15 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
   const mouseRef = useRef({ x: 0, y: 0 });
   const orbitParticlesRef = useRef<OrbitParticle[]>([]);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const lastUpdateTime = useRef(0);
+
+  // Performance optimization: Skip animation if nodeCount is 0
+  const shouldAnimate = nodeCount > 0;
 
   // Initialize orbit particles for React Native atom effect
   const initializeOrbitParticles = useCallback(() => {
+    if (!shouldAnimate) return;
+
     const orbits: OrbitParticle[] = [];
 
     // Create 3 elliptical orbits with different orientations
@@ -60,11 +66,13 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
     }
 
     orbitParticlesRef.current = orbits;
-  }, []);
+  }, [shouldAnimate]);
 
   // Initialize nodes
   const initializeNodes = useCallback(
     (width: number, height: number) => {
+      if (!shouldAnimate) return;
+
       const nodes: Node[] = [];
 
       // Create main node positioned on the right side (fixed position)
@@ -94,12 +102,15 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
       nodesRef.current = nodes;
       initializeOrbitParticles();
     },
-    [nodeCount, initializeOrbitParticles]
+    [nodeCount, initializeOrbitParticles, shouldAnimate]
   );
 
-  // Calculate connections between nodes
+  // Calculate connections between nodes - optimized
   const calculateConnections = useCallback(() => {
+    if (!shouldAnimate) return;
+
     const nodes = nodesRef.current;
+    const connectionDistanceSq = connectionDistance * connectionDistance;
 
     nodes.forEach(node => {
       node.connections = [];
@@ -109,19 +120,21 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
       for (let j = i + 1; j < nodes.length; j++) {
         const dx = nodes[i].x - nodes[j].x;
         const dy = nodes[i].y - nodes[j].y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const distanceSq = dx * dx + dy * dy; // Avoid sqrt for performance
 
-        if (distance < connectionDistance) {
+        if (distanceSq < connectionDistanceSq) {
           nodes[i].connections.push(j);
           nodes[j].connections.push(i);
         }
       }
     }
-  }, [connectionDistance]);
+  }, [connectionDistance, shouldAnimate]);
 
-  // Update orbit particles
+  // Update orbit particles - optimized
   const updateOrbitParticles = useCallback(
     (mouseDistance: number) => {
+      if (!shouldAnimate) return;
+
       orbitParticlesRef.current.forEach(orbit => {
         // Update particle position (particles move)
         orbit.angle += orbit.speed;
@@ -144,12 +157,14 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
         }
       });
     },
-    [mouseInfluence]
+    [mouseInfluence, shouldAnimate]
   );
 
-  // Update node positions
+  // Update node positions - optimized with frame rate limiting
   const updateNodes = useCallback(
     (width: number, height: number) => {
+      if (!shouldAnimate) return;
+
       const nodes = nodesRef.current;
       const mouse = mouseRef.current;
       const mainNode = nodes.find(node => node.isMainNode);
@@ -185,12 +200,13 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
           node.x += node.vx;
           node.y += node.vy;
 
-          // Mouse influence on nearby nodes
+          // Mouse influence on nearby nodes - optimized
           const dx = mouse.x - node.x;
           const dy = mouse.y - node.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+          const distanceSq = dx * dx + dy * dy;
 
-          if (distance < mouseInfluence) {
+          if (distanceSq < mouseInfluence * mouseInfluence) {
+            const distance = Math.sqrt(distanceSq);
             const force = (mouseInfluence - distance) / mouseInfluence;
             const angle = Math.atan2(dy, dx);
             node.vx += Math.cos(angle) * force * 0.01;
@@ -211,14 +227,18 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
             node.y = Math.max(0, Math.min(height, node.y));
           }
 
-          // Add slight random movement
-          node.vx += (Math.random() - 0.5) * 0.01;
-          node.vy += (Math.random() - 0.5) * 0.01;
+          // Add slight random movement - reduced frequency
+          if (Math.random() < 0.1) {
+            // Only 10% of the time
+            node.vx += (Math.random() - 0.5) * 0.01;
+            node.vy += (Math.random() - 0.5) * 0.01;
+          }
 
           // Limit velocity
           const maxVel = 2;
-          const vel = Math.sqrt(node.vx * node.vx + node.vy * node.vy);
-          if (vel > maxVel) {
+          const velSq = node.vx * node.vx + node.vy * node.vy;
+          if (velSq > maxVel * maxVel) {
+            const vel = Math.sqrt(velSq);
             node.vx = (node.vx / vel) * maxVel;
             node.vy = (node.vy / vel) * maxVel;
           }
@@ -227,125 +247,75 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
 
       updateOrbitParticles(mouseDistance);
     },
-    [mouseInfluence, updateOrbitParticles]
+    [mouseInfluence, updateOrbitParticles, shouldAnimate]
   );
 
-  // Draw orbit particles around main node
-  const drawOrbitParticles = useCallback((ctx: CanvasRenderingContext2D, mainNode: Node) => {
-    const orbits = orbitParticlesRef.current;
+  // Draw orbit particles around main node - optimized
+  const drawOrbitParticles = useCallback(
+    (ctx: CanvasRenderingContext2D, mainNode: Node) => {
+      if (!shouldAnimate) return;
 
-    orbits.forEach(orbit => {
-      // Calculate position on elliptical orbit
-      const rotatedX = Math.cos(orbit.angle) * orbit.radiusX;
-      const rotatedY = Math.sin(orbit.angle) * orbit.radiusY;
+      const orbits = orbitParticlesRef.current;
 
-      // Apply orbit rotation (includes mouse-influenced pathRotation)
-      const totalRotation = orbit.rotation + orbit.pathRotation;
-      const finalX =
-        mainNode.x + (rotatedX * Math.cos(totalRotation) - rotatedY * Math.sin(totalRotation));
-      const finalY =
-        mainNode.y + (rotatedX * Math.sin(totalRotation) + rotatedY * Math.cos(totalRotation));
+      orbits.forEach(orbit => {
+        // Calculate position on elliptical orbit
+        const rotatedX = Math.cos(orbit.angle) * orbit.radiusX;
+        const rotatedY = Math.sin(orbit.angle) * orbit.radiusY;
 
-      // Draw orbit path with rotation
-      ctx.save();
-      ctx.translate(mainNode.x, mainNode.y);
-      ctx.rotate(totalRotation);
+        // Apply orbit rotation (includes mouse-influenced pathRotation)
+        const totalRotation = orbit.rotation + orbit.pathRotation;
+        const finalX =
+          mainNode.x + (rotatedX * Math.cos(totalRotation) - rotatedY * Math.sin(totalRotation));
+        const finalY =
+          mainNode.y + (rotatedX * Math.sin(totalRotation) + rotatedY * Math.cos(totalRotation));
 
-      // Outer glow layer
-      const outerGradient = ctx.createLinearGradient(-orbit.radiusX, 0, orbit.radiusX, 0);
-      outerGradient.addColorStop(0, 'rgba(147, 51, 234, 0.15)');
-      outerGradient.addColorStop(0.5, 'rgba(147, 51, 234, 0.4)');
-      outerGradient.addColorStop(1, 'rgba(147, 51, 234, 0.15)');
+        // Simplified orbit drawing - less complex gradients
+        ctx.save();
+        ctx.translate(mainNode.x, mainNode.y);
+        ctx.rotate(totalRotation);
 
-      ctx.strokeStyle = outerGradient;
-      ctx.lineWidth = 3;
-      ctx.setLineDash([]);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, orbit.radiusX + 1, orbit.radiusY + 1, 0, 0, Math.PI * 2);
-      ctx.stroke();
-
-      // Main orbit path - solid and bright
-      const mainGradient = ctx.createLinearGradient(-orbit.radiusX, 0, orbit.radiusX, 0);
-      mainGradient.addColorStop(0, 'rgba(147, 51, 234, 0.6)');
-      mainGradient.addColorStop(0.5, 'rgba(147, 51, 234, 0.9)');
-      mainGradient.addColorStop(1, 'rgba(147, 51, 234, 0.6)');
-
-      ctx.strokeStyle = mainGradient;
-      ctx.lineWidth = 2;
-      ctx.setLineDash([]);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, orbit.radiusX, orbit.radiusY, 0, 0, Math.PI * 2);
-      ctx.stroke();
-
-      // Inner highlight
-      ctx.strokeStyle = 'rgba(147, 51, 234, 0.95)';
-      ctx.lineWidth = 1;
-      ctx.setLineDash([]);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, orbit.radiusX - 0.5, orbit.radiusY - 0.5, 0, 0, Math.PI * 2);
-      ctx.stroke();
-
-      ctx.restore();
-
-      // Draw orbit particle with enhanced glow
-      const gradient = ctx.createRadialGradient(finalX, finalY, 0, finalX, finalY, 6);
-      gradient.addColorStop(0, 'rgba(147, 51, 234, 1)');
-      gradient.addColorStop(0.3, 'rgba(147, 51, 234, 0.9)');
-      gradient.addColorStop(0.7, 'rgba(147, 51, 234, 0.4)');
-      gradient.addColorStop(1, 'rgba(147, 51, 234, 0.1)');
-
-      ctx.fillStyle = gradient;
-      ctx.beginPath();
-      ctx.arc(finalX, finalY, 3, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Add pulsing glow effect
-      const pulseIntensity = 0.8 + 0.2 * Math.sin(orbit.angle * 3);
-      ctx.shadowColor = `rgba(147, 51, 234, ${pulseIntensity * 0.8})`;
-      ctx.shadowBlur = 12;
-      ctx.fillStyle = `rgba(147, 51, 234, ${pulseIntensity})`;
-      ctx.beginPath();
-      ctx.arc(finalX, finalY, 1.5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-
-      // Add trailing effect
-      const trailLength = 4;
-      for (let i = 1; i <= trailLength; i++) {
-        const trailAngle = orbit.angle - i * 0.06;
-        const trailX = Math.cos(trailAngle) * orbit.radiusX;
-        const trailY = Math.sin(trailAngle) * orbit.radiusY;
-
-        const trailFinalX =
-          mainNode.x + (trailX * Math.cos(totalRotation) - trailY * Math.sin(totalRotation));
-        const trailFinalY =
-          mainNode.y + (trailX * Math.sin(totalRotation) + trailY * Math.cos(totalRotation));
-
-        const trailOpacity = ((trailLength - i) / trailLength) * 0.3;
-        const trailSize = (1.5 * (trailLength - i)) / trailLength;
-
-        ctx.fillStyle = `rgba(147, 51, 234, ${trailOpacity})`;
+        // Main orbit path - simplified
+        ctx.strokeStyle = 'rgba(147, 51, 234, 0.6)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([]);
         ctx.beginPath();
-        ctx.arc(trailFinalX, trailFinalY, trailSize, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    });
-  }, []);
+        ctx.ellipse(0, 0, orbit.radiusX, orbit.radiusY, 0, 0, Math.PI * 2);
+        ctx.stroke();
 
-  // Render the network
+        ctx.restore();
+
+        // Draw orbit particle - simplified
+        ctx.fillStyle = 'rgba(147, 51, 234, 0.9)';
+        ctx.beginPath();
+        ctx.arc(finalX, finalY, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Simplified glow
+        ctx.shadowColor = 'rgba(147, 51, 234, 0.6)';
+        ctx.shadowBlur = 8;
+        ctx.fillStyle = 'rgba(147, 51, 234, 0.8)';
+        ctx.beginPath();
+        ctx.arc(finalX, finalY, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+    },
+    [shouldAnimate]
+  );
+
+  // Render the network - optimized
   const render = useCallback(
     (ctx: CanvasRenderingContext2D, width: number, height: number) => {
       // Clear canvas with dark background
       ctx.fillStyle = '#0f172a';
       ctx.fillRect(0, 0, width, height);
 
+      if (!shouldAnimate) return;
+
       const nodes = nodesRef.current;
       const mainNode = nodes.find(node => node.isMainNode);
 
-      // Draw connections
-      ctx.strokeStyle = 'rgba(59, 130, 246, 0.3)';
-      ctx.lineWidth = 1;
-
+      // Draw connections - simplified
       nodes.forEach((node, i) => {
         node.connections.forEach(connectionIndex => {
           if (connectionIndex > i) {
@@ -357,10 +327,10 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
             const opacity = Math.max(0, 1 - distance / connectionDistance);
 
             if (node.isMainNode || connectedNode.isMainNode) {
-              ctx.strokeStyle = `rgba(147, 51, 234, ${opacity * 0.8})`;
+              ctx.strokeStyle = `rgba(147, 51, 234, ${opacity * 0.6})`;
               ctx.lineWidth = 2;
             } else {
-              ctx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.4})`;
+              ctx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.3})`;
               ctx.lineWidth = 1;
             }
 
@@ -372,58 +342,45 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
         });
       });
 
-      // Draw orbit particles around main node (React Native atom effect)
+      // Draw orbit particles around main node
       if (mainNode) {
         drawOrbitParticles(ctx, mainNode);
       }
 
-      // Draw nodes
+      // Draw nodes - simplified
       nodes.forEach(node => {
         ctx.beginPath();
 
         if (node.isMainNode) {
-          // Main node - smaller size
-          const gradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, 12);
-          gradient.addColorStop(0, 'rgba(147, 51, 234, 1)');
-          gradient.addColorStop(0.3, 'rgba(147, 51, 234, 0.9)');
-          gradient.addColorStop(0.6, 'rgba(147, 51, 234, 0.5)');
-          gradient.addColorStop(1, 'rgba(147, 51, 234, 0.1)');
-
-          ctx.fillStyle = gradient;
+          // Main node - simplified
+          ctx.fillStyle = 'rgba(147, 51, 234, 0.9)';
           ctx.arc(node.x, node.y, 8, 0, Math.PI * 2);
           ctx.fill();
 
-          // Add pulsing glow effect
-          const time = Date.now() * 0.003;
-          const pulseIntensity = 0.7 + 0.3 * Math.sin(time);
-          ctx.shadowColor = `rgba(147, 51, 234, ${pulseIntensity})`;
-          ctx.shadowBlur = 20;
-          ctx.fillStyle = `rgba(147, 51, 234, ${pulseIntensity})`;
+          // Simplified glow
+          ctx.shadowColor = 'rgba(147, 51, 234, 0.8)';
+          ctx.shadowBlur = 15;
+          ctx.fillStyle = 'rgba(147, 51, 234, 0.8)';
           ctx.arc(node.x, node.y, 4, 0, Math.PI * 2);
           ctx.fill();
           ctx.shadowBlur = 0;
         } else {
-          // Regular nodes
-          const gradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, 6);
-          gradient.addColorStop(0, 'rgba(59, 130, 246, 0.9)');
-          gradient.addColorStop(0.5, 'rgba(59, 130, 246, 0.6)');
-          gradient.addColorStop(1, 'rgba(59, 130, 246, 0.1)');
-
-          ctx.fillStyle = gradient;
+          // Regular nodes - simplified
+          ctx.fillStyle = 'rgba(59, 130, 246, 0.8)';
           ctx.arc(node.x, node.y, 3, 0, Math.PI * 2);
           ctx.fill();
 
           // Core
-          ctx.fillStyle = 'rgba(59, 130, 246, 0.8)';
+          ctx.fillStyle = 'rgba(59, 130, 246, 0.9)';
           ctx.arc(node.x, node.y, 1.5, 0, Math.PI * 2);
           ctx.fill();
         }
       });
     },
-    [connectionDistance, drawOrbitParticles]
+    [connectionDistance, drawOrbitParticles, shouldAnimate]
   );
 
-  // Animation loop
+  // Animation loop with frame rate limiting
   const animate = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -433,23 +390,34 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
 
     const { width, height } = dimensions;
 
-    // Mobilde nodeCount 0 ise animasyonu durdur (performans optimizasyonu)
-    if (nodeCount === 0) {
-      // Sadece siyah background çiz
+    // Performance optimization: Skip animation if nodeCount is 0
+    if (!shouldAnimate) {
+      // Just render static background
       ctx.fillStyle = '#0f172a';
       ctx.fillRect(0, 0, width, height);
       return;
     }
+
+    // Frame rate limiting for better performance
+    const now = performance.now();
+    if (now - lastUpdateTime.current < 16.67) {
+      // ~60fps
+      animationRef.current = requestAnimationFrame(animate);
+      return;
+    }
+    lastUpdateTime.current = now;
 
     updateNodes(width, height);
     calculateConnections();
     render(ctx, width, height);
 
     animationRef.current = requestAnimationFrame(animate);
-  }, [dimensions, updateNodes, calculateConnections, render, nodeCount]);
+  }, [dimensions, updateNodes, calculateConnections, render, shouldAnimate]);
 
-  // Handle mouse movement
+  // Handle mouse movement - optimized
   useEffect(() => {
+    if (!shouldAnimate) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
@@ -462,7 +430,6 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      // Mobilde kaydırmayı engellememek için preventDefault kaldırıldı
       const canvas = canvasRef.current;
       if (!canvas || !e.touches[0]) return;
 
@@ -473,17 +440,14 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
       };
     };
 
-    // Sadece nodeCount > 0 olduğunda event listener'ları ekle (performans optimizasyonu)
-    if (nodeCount > 0) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('touchmove', handleTouchMove, { passive: true });
-    }
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [nodeCount]);
+  }, [shouldAnimate]);
 
   // Handle resize and initialization
   useEffect(() => {
@@ -500,7 +464,9 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
         // Set initial mouse position to center
         mouseRef.current = { x: width / 2, y: height / 2 };
 
-        initializeNodes(width, height);
+        if (shouldAnimate) {
+          initializeNodes(width, height);
+        }
       }
     };
 
@@ -508,7 +474,7 @@ export const NetworkBackground: React.FC<NetworkBackgroundProps> = ({
     window.addEventListener('resize', updateDimensions);
 
     return () => window.removeEventListener('resize', updateDimensions);
-  }, [initializeNodes]);
+  }, [initializeNodes, shouldAnimate]);
 
   // Start animation
   useEffect(() => {
